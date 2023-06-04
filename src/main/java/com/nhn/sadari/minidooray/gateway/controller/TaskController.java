@@ -6,21 +6,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/tasks")
+@RequestMapping("projects/{id}/tasks")
 public class TaskController {
 
     @GetMapping
-    public String getTasks() {
+    public String getTasks(@PathVariable Long id) {
         return "/task/task_list";
     }
 
     @GetMapping("/register")
-    public String getTaskRegisterForm() {
+    public String getTaskRegisterForm(@PathVariable Long id) {
         return "/task/task_register";
     }
 
-    @GetMapping("/{id}")
-    public String getTask(@PathVariable Long id) {
+    @GetMapping("/{taskId}")
+    public String getTask(@PathVariable Long id, @PathVariable Long taskId) {
         return "/task/task_view";
     }
 }

@@ -1,21 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>MiniDooray - 프로젝트 목록</title>
+    <style>
+        div {
+            margin: 20px;
+            padding: 20px;
+            border-style: solid;
+            border-color: forestgreen;
+        }
+    </style>
 </head>
 <body>
-<table border="1">
-    <th>프로젝트명</th>
-    <th>프로젝트 상태</th>
+<th:block th:include="/heading/login_info"/>
+<table>
+    <thead>
     <tr>
-        <td><a href="/projects/1">프로젝트1</a></td>
-        <td th:text="${testString}"></td>
+        <th>번호</th>
+        <th>제목</th>
+        <th>설명</th>
+        <th>담당자</th>
+        <th>태그</th>
     </tr>
-    <tr>
-        <td><a href="/projects/2">프로젝트2</a></td>
-        <td>완료</td>
+    </thead>
+    <tbody>
+    <tr th:each="project, stat : ${projects}">
+        <td th:text="|${stat.count}|">1</td>
+        <td><a th:href="@{/projects/{id}(id=${project.id})}" th:text="${project.title}">테스트 제목1</a></td>
+        <td><a th:href="@{/projects/{id}(id=${project.id})}" th:text="${project.description}">테스트 제목1</a></td>
+        <td th:text="${project.adminName}">테스트 담당자1></td>
+        <td th:each="tag: ${project.tags}">
+            <span th:text="${tag.name}"></span>
+        </td>
     </tr>
+    </tbody>
 </table>
+paging 하기, 클릭하면 넘어가기
+
+필요한거 - 프로젝트 리스트 by account id
 </body>
 </html>

@@ -13,7 +13,6 @@ public class ProjectController {
     @GetMapping
     public String getProjects(Model model) {
 
-        model.addAttribute("testString", "testString입니다.");
         return "project/project_list";
     }
 
@@ -28,4 +27,9 @@ public class ProjectController {
         return "/project/project_update";
     }
 
+    @GetMapping("/{id}/members")
+    public String getProjectMemberList(@PathVariable Long id) {
+
+        return "/project/project_member_list";
+    }
 }
