@@ -1,0 +1,34 @@
+### 아이디 비밀번호 요청
+
+GET /api/accounts/{id}
+Host: localhost:8080
+Content-Type: application/json
+
+### 회원가입
+POST /api/accounts
+Host: localhost:8080
+Content-Type: application/json
+
+{
+  "loginId": "",
+  "password": "",
+  "name": "",
+  "email": ""
+}
+
+### 회원탈퇴
+DELETE /api/accounts/{id}
+Host: localhost:8080
+Content-Type: application/json
+
+### 수정
+PUT /api/accounts/{id}
+Host: localhost:8080
+Content-Type: application/json
+
+{
+  "loginId": "",
+  "password": "",
+  "name": "",
+  "email": ""
+}

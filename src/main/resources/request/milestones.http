@@ -1,0 +1,26 @@
+### 마일스톤 등록
+POST /api/projects/{projectId}/milestones
+Host: localhost:8080
+Content-Type: application/json
+
+{
+  "name": "",
+  "startDate": "",
+  "endDate": ""
+}
+
+### 마일스톤 수정
+PUT /api/projects/{projectId}/milestones/{milestoneId}
+Host: localhost:8080
+Content-Type: application/json
+
+{
+  "name": "",
+  "startDate": "",
+  "endDate": ""
+}
+
+### 마일스톤 삭제
+DELETE /api/projects/{projectId}/milestones/{milestoneId}
+Host: localhost:8080
+Content-Type: application/json

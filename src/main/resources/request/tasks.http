@@ -1,0 +1,36 @@
+### 업무 등록
+POST /api/projects/{projectId}/tasks
+Host: localhost:8080
+Content-Type: application/json
+
+{
+  "title": "",
+  "content": "",
+  "writerId": 1,
+
+  "endDate": "",
+  "memberIds": [ 1,2 ],
+  "milestoneId": 1,
+  "tagIds": [ 1, 2]
+}
+
+### 업무 수정
+PUT /api/projects/{projectId}/tasks/{taskId}
+Host: localhost:8080
+Content-Type: application/json
+
+{
+  "title": "",
+  "content": "",
+  "writerId": 1,
+
+  "endDate": "",
+  "memberIds": [ 1,2 ],
+  "milestoneId": 1,
+  "tagIds": [ 1, 2]
+}
+
+### 업무 삭제
+DELETE /api/projects/{projectId}/tasks/{taskId}
+Host: localhost:8080
+Content-Type: application/json

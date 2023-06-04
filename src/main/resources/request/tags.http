@@ -1,0 +1,23 @@
+### 태그 등록
+POST /api/projects/{projectId}/tags
+Host: localhost:8080
+Content-Type: application/json
+
+{
+  "name": "tagName"
+}
+
+
+### 태그 수정
+PUT /api/projects/{projectId}/tags/{tagId}
+Host: localhost:8080
+Content-Type: application/json
+
+{
+  "name": "tagName"
+}
+
+### 태그 삭제
+DELETE /api/projects/{projectId}/tags/{tagId}
+Host: localhost:8080
+Content-Type: application/json

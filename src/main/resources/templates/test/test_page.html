@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>테스트페이지</title>
+    <style>
+        div {
+            margin: 30px;
+            border-style: dotted;
+            border-color: darkgray;
+        }
+    </style>
+</head>
+<body>
+<h1>테스트 페이지 입니다.</h1>
+
+<div><th:block th:include="index" /></div>
+<div><th:block th:include="project/project_list" /></div>
+<div><th:block th:include="tag/tag_register" /></div>
+
+</body>
+</html>
