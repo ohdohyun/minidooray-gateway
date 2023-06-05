@@ -1,18 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Milestone Register</title>
 </head>
 <body>
-이름
-기간(버튼) 없음 있음 -> 날짜표시
-<h3>마일스톤 추가</h3>
-<form>
-  <label for="milestoneName">마일스톤 명</label>
-  <input type="text" name="milestoneName" id="milestoneName"><br/>
-  <div>기간:</div> 없음<input type="radio">
-  있음<input type="radio">
+<h2>Milestone Register Form</h2>
+<form action="#" th:action="@{/projects/{projectId}/milestones/register(projectId=${projectId})}" th:object="${milestoneRegister}" method="post">
+    <p>Name: <input type="text" th:field="*{name}"/></p>
+    <p>Start Date: <input type="date" th:field="*{startDate}"/></p>
+    <p>End Date: <input type="date" th:field="*{endDate}"/></p>
+    <p><input type="submit" value="Submit"/></p>
 </form>
 </body>
 </html>

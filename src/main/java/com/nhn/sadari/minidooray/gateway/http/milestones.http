@@ -1,5 +1,5 @@
 ### 마일스톤 등록
-POST /api/projects/1/milestones
+POST /api/projects/5/milestones
 Host: localhost:9090
 Content-Type: application/json
 

@@ -1,24 +1,39 @@
 package com.nhn.sadari.minidooray.gateway.controller;
 
+import com.nhn.sadari.minidooray.gateway.domain.milestone.MilestoneRegister;
+import com.nhn.sadari.minidooray.gateway.service.MilestoneService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @Controller
-@RequestMapping("projects/{id}/milestones")
+@RequestMapping("projects/{projectId}/milestones")
+@RequiredArgsConstructor
 public class MilestoneController {
 
-    @GetMapping("/register")
-    public String getMilestoneRegisterForm(@PathVariable Long id, Model model) {
+    private final MilestoneService milestoneService;
 
+    @GetMapping("/register")
+    public String getMilestoneRegisterForm(@PathVariable Long projectId, Model model) {
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("milestoneRegister", new MilestoneRegister());
         return "/milestone/milestone_register";
     }
 
-    @GetMapping
-    public String getMilestoneList(@PathVariable Long id) {
-
-        return "/milestone/milestone_list";
+    @PostMapping("/register")
+    public String doMilestoneRegister(@ModelAttribute MilestoneRegister milestoneRegister, @PathVariable Long projectId) {
+        LocalDate test = milestoneRegister.getStartDate();
+        milestoneService.registerMilestone(milestoneRegister, projectId);
+        return "/index";
     }
+
+    @GetMapping("/{milestoneId}/delete")
+    public String deleteMilestone(@PathVariable Long projectId, @PathVariable Long milestoneId) {
+        milestoneService.deleteMilestone(projectId, milestoneId);
+        return "/index";
+    }
+
 }
