@@ -1,4 +1,4 @@
-package com.nhn.sadari.minidooray.gateway.domain;
+package com.nhn.sadari.minidooray.gateway.domain.project;
 
 
 import com.nhn.sadari.minidooray.gateway.enumclass.ProjectStatusType;

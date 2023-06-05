@@ -1,9 +1,10 @@
 package com.nhn.sadari.minidooray.gateway.controller;
 
-import com.nhn.sadari.minidooray.gateway.domain.IdDto;
-import com.nhn.sadari.minidooray.gateway.domain.ProjectModifyDto;
-import com.nhn.sadari.minidooray.gateway.domain.ProjectModifyGet;
-import com.nhn.sadari.minidooray.gateway.domain.ProjectRegisterDto;
+import com.nhn.sadari.minidooray.gateway.domain.*;
+import com.nhn.sadari.minidooray.gateway.domain.project.ProjectGet;
+import com.nhn.sadari.minidooray.gateway.domain.project.ProjectMemberRegister;
+import com.nhn.sadari.minidooray.gateway.domain.project.ProjectModifyDto;
+import com.nhn.sadari.minidooray.gateway.domain.project.ProjectRegisterDto;
 import com.nhn.sadari.minidooray.gateway.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -39,7 +40,7 @@ public class ProjectController {
     @GetMapping("/{projectId}/modify")
     public String getModifyForm(@PathVariable Long projectId, Model model) {
 
-        ProjectModifyGet get = projectService.findByProjectId(projectId);
+        ProjectGet get = projectService.findByProjectId(projectId);
         ProjectModifyDto projectModifyDto = new ProjectModifyDto();
         projectModifyDto.setName(get.getName());
         projectModifyDto.setDescription(get.getDescription());
@@ -65,27 +66,35 @@ public class ProjectController {
         return "/index";
     }
 
+    @GetMapping("/members/{memberId}")
+    public String getProjectByMemberId(@PathVariable Long memberId, Model model) {
 
-    @GetMapping
-    public String getProjects(Model model) {
-
+        model.addAttribute("projectList", projectService.getProjectsByMemberId(memberId));
         return "project/project_list";
     }
 
-    @GetMapping("/{id}")
-    public String getProjectInfo(@PathVariable Long id) {
+    @GetMapping("/{projectId}/members/register")
+    public String getProjectMemberRegisterForm(@PathVariable Long projectId, Model model) {
 
-        return "/project/project_view";
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("projectMemberRegister", new ProjectMemberRegister());
+        return "project/project_member_register";
     }
 
-    @GetMapping("/update")
-    public String getProjectUpdateForm() {
-        return "/project/project_update";
+    @PostMapping("/{projectId}/members/register")
+    public String doProjectMemberRegister(@ModelAttribute ProjectMemberRegister projectMemberRegister, @PathVariable Long projectId) {
+
+        projectService.createProjectMember(projectMemberRegister, projectId);
+
+        return "/index";
     }
 
-    @GetMapping("/{id}/members")
-    public String getProjectMemberList(@PathVariable Long id) {
 
-        return "/project/project_member_list";
+    @GetMapping("/{projectId}/members/{memberId}/delete")
+    public String deleteProjectMemberByMemberId(@PathVariable Long projectId, @PathVariable Long memberId) {
+        projectService.deleteProjectMemberByMemberId(projectId, memberId);
+
+        return "/index";
     }
+
 }

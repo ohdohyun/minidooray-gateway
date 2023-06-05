@@ -1,4 +1,4 @@
-package com.nhn.sadari.minidooray.gateway.domain;
+package com.nhn.sadari.minidooray.gateway.domain.project;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

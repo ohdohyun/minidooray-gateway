@@ -1,26 +1,26 @@
 ### 마일스톤 등록
-POST /api/projects/{projectId}/milestones
-Host: localhost:8080
+POST /api/projects/1/milestones
+Host: localhost:9090
 Content-Type: application/json
 
 {
-  "name": "",
-  "startDate": "",
-  "endDate": ""
+  "name": "마일스톤1",
+  "startDate": "2023-04-28",
+  "endDate": "2023-06-01"
 }
 
 ### 마일스톤 수정
-PUT /api/projects/{projectId}/milestones/{milestoneId}
-Host: localhost:8080
+PUT /api/projects/1/milestones/2
+Host: localhost:9090
 Content-Type: application/json
 
 {
-  "name": "",
-  "startDate": "",
-  "endDate": ""
+  "name": "마일스톤 수정",
+  "startDate": "2023-04-29",
+  "endDate": "2023-06-01"
 }
 
 ### 마일스톤 삭제
-DELETE /api/projects/{projectId}/milestones/{milestoneId}
-Host: localhost:8080
+DELETE /api/projects/1/milestones/1
+Host: localhost:9090
 Content-Type: application/json

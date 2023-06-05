@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Member Form</title>
+  <meta charset="UTF-8">
+</head>
+<body>
+<h2>멤버 등록</h2>
+<form action="#" th:action="@{/projects/{projectId}/members/register(projectId=${projectId})}" th:object="${projectMemberRegister}" method="post">
+  <p>Member ID: <input type="text" th:field="*{memberId}"/></p>
+  <p>Member Name: <input type="text" th:field="*{memberName}"/></p>
+  <p>Role:
+    <select th:field="*{role}">
+      <option th:each="role : ${T(com.nhn.sadari.minidooray.gateway.enumclass.ProjectMemberRoleType).values()}"
+              th:value="${role}"
+              th:text="${role}">Role</option>
+    </select>
+  </p>
+  <p><input type="submit" value="Submit"/></p>
+</form>
+</body>
+</html>

@@ -20,24 +20,18 @@
         <th>번호</th>
         <th>제목</th>
         <th>설명</th>
-        <th>담당자</th>
-        <th>태그</th>
+        <th>상태</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="project, stat : ${projects}">
+    <tr th:each="project_item, stat : ${projectList}">
         <td th:text="|${stat.count}|">1</td>
-        <td><a th:href="@{/projects/{id}(id=${project.id})}" th:text="${project.title}">테스트 제목1</a></td>
-        <td><a th:href="@{/projects/{id}(id=${project.id})}" th:text="${project.description}">테스트 제목1</a></td>
-        <td th:text="${project.getmember().getadminName()}">테스트 담당자1></td>
-        <td th:each="tag: ${project.getTag().getName()}">
-            <span th:text="${tag.name}"></span>
-        </td>
+        <td><a th:href="@{/projects/{id}(id=${project_item.id})}" th:text="${project_item.name}">테스트 제목1</a></td>
+        <td><a th:href="@{/projects/{id}(id=${project_item.id})}" th:text="${project_item.description}">테스트 제목1</a></td>
+        <td th:text="${project_item.projectStatus_status}"></td>
     </tr>
     </tbody>
 </table>
 paging 하기, 클릭하면 넘어가기
-
-필요한거 - 프로젝트 리스트 by account id
 </body>
 </html>

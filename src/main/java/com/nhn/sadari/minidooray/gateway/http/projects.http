@@ -1,5 +1,4 @@
 ### 프로젝트 등록
-
 POST /api/projects
 Host: localhost:9090
 Content-Type: application/json
@@ -11,8 +10,9 @@ Content-Type: application/json
   "memberName": "홍길동"
 }
 
-### 프로젝트 기본 설정 수정
-PUT /api/projects/{projectId}
+
+### 프로젝트 수정 (기본설정)
+PUT /api/projects/1
 Host: localhost:9090
 Content-Type: application/json
 
@@ -22,55 +22,6 @@ Content-Type: application/json
   "description": "프로젝트 설명 수정"
 }
 
-### 프로젝트 멤버 등록
-POST /api/projects/{projectId}/members
-Host: localhost:9090
-Content-Type: application/json
-
-{
-  "memberId": 2,
-  "memberName": "김조원",
-  "role": "멤버"
-}
-
-### 프로젝트 멤버 등록
-POST /api/projects/17/members
-Host: localhost:9090
-Content-Type: application/json
-
-{
-  "memberId": 2,
-  "memberName": "김조원",
-  "role": "멤버"
-}
-
-### 프로젝트 멤버 역할 수정
-PUT /api/projects/{projectId}/members/{memberId}
-Host: localhost:9090
-Content-Type: application/json
-
-{
-  "role": "관리자"
-}
-
-### 프로젝트 멤버 역할 수정
-PUT /api/projects/17/members/2
-Host: localhost:9090
-Content-Type: application/json
-
-{
-  "role": "관리자"
-}
-
-### 프로젝트 멤버 삭제
-DELETE /api/projects/{projectId}/members/{memberId}
-Host: localhost:9090
-Content-Type: application/json
-
-### 프로젝트 멤버 삭제
-DELETE /api/projects/17/members/2
-Host: localhost:9090
-Content-Type: application/json
 
 ### 프로젝트 삭제
 DELETE /api/projects/1
@@ -78,77 +29,40 @@ Host: localhost:9090
 Content-Type: application/json
 
 
-### 프로젝트 리스트 조회
-GET /api/projects/members/{memberId}
+### 프로젝트 멤버 등록
+POST /api/projects/1/members
 Host: localhost:9090
 Content-Type: application/json
 
-### 프로젝트 리스트 조회
+{
+  "memberId": 2,
+  "memberName": "김조원",
+  "role": "멤버"
+}
+
+
+### 프로젝트 멤버 역할 수정
+PUT /api/projects/1/members/2
+Host: localhost:9090
+Content-Type: application/json
+
+{
+  "role": "관리자"
+}
+
+### 프로젝트 멤버 삭제
+DELETE /api/projects/17/members/2
+Host: localhost:9090
+Content-Type: application/json
+
+
+### 멤버 아이다로 프로젝트 리스트 조회
 GET /api/projects/members/1
 Host: localhost:9090
 Content-Type: application/json
 
-### 프로젝트 아이디로 조회
+
+### 프로젝트 아이디로 프로젝트 조회
 GET /api/projects/1
 Host: localhost:9090
-Content-Type: application/json
-
-
-
-
-
-
-
-
-
-
-
-
-
-### 마일스톤 등록
-
-POST /api/milestone
-Host: localhost:8080
-Content-Type: application/json
-
-{
-
-}
-
-### 마일스톤 수정
-PUT /api/milestone/{id}
-Host: localhost:8080
-Content-Type: application/json
-
-{
-
-}
-
-### 마일스톤 삭제
-DELETE /api/milestone/{id}
-Host: localhost:8080
-Content-Type: application/json
-
-### 태그 등록
-
-POST /api/tags
-Host: localhost:8080
-Content-Type: application/json
-
-{
-
-}
-
-### 태그 수정
-PUT /api/tags/{id}
-Host: localhost:8080
-Content-Type: application/json
-
-{
-
-}
-
-### 태그 삭제
-DELETE /api/tags/{id}
-Host: localhost:8080
 Content-Type: application/json

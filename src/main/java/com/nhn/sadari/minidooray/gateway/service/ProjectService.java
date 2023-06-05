@@ -1,9 +1,7 @@
 package com.nhn.sadari.minidooray.gateway.service;
 
-import com.nhn.sadari.minidooray.gateway.domain.IdDto;
-import com.nhn.sadari.minidooray.gateway.domain.ProjectModifyDto;
-import com.nhn.sadari.minidooray.gateway.domain.ProjectModifyGet;
-import com.nhn.sadari.minidooray.gateway.domain.ProjectRegisterDto;
+import com.nhn.sadari.minidooray.gateway.domain.*;
+import com.nhn.sadari.minidooray.gateway.domain.project.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
@@ -17,6 +15,7 @@ public class ProjectService {
 
     @Autowired
     private RestTemplate restTemplate;
+
 
     public IdDto create(ProjectRegisterDto projectRegisterDto) {
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -32,17 +31,17 @@ public class ProjectService {
         return exchange.getBody();
     }
 
-    public ProjectModifyGet findByProjectId(Long id) {
+    public ProjectGet findByProjectId(Long id) {
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
 
         HttpEntity<String> requestEntity = new HttpEntity<>(httpHeaders);
-        ResponseEntity<ProjectModifyGet> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + id,
+        ResponseEntity<ProjectGet> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + id,
                 HttpMethod.GET,
                 requestEntity,
-                ProjectModifyGet.class,
+                ProjectGet.class,
                 new ParameterizedTypeReference<>() {
                 });
 
@@ -69,6 +68,45 @@ public class ProjectService {
         HttpEntity<String> requestEntity = new HttpEntity<>(httpHeaders);
 
         ResponseEntity<IdDto> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + projectId,
+                HttpMethod.DELETE,
+                requestEntity,
+                new ParameterizedTypeReference<>() {
+                });
+        return exchange.getBody();
+    }
+
+    public List<ProjectListGet> getProjectsByMemberId(Long memberId) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
+        HttpEntity<String> requestEntity = new HttpEntity<>(httpHeaders);
+
+        ResponseEntity<List<ProjectListGet>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/members/" + memberId,
+                HttpMethod.GET,
+                requestEntity,
+                new ParameterizedTypeReference<>() {
+                });
+        return exchange.getBody();
+    }
+
+    public IdDto createProjectMember(ProjectMemberRegister projectMemberRegister, Long projectId) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
+        HttpEntity<ProjectMemberRegister> requestEntity = new HttpEntity<>(projectMemberRegister, httpHeaders);
+
+        ResponseEntity<IdDto> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + projectId + "/members",
+                HttpMethod.POST,
+                requestEntity,
+                new ParameterizedTypeReference<>() {
+                });
+        return exchange.getBody();
+    }
+
+    public IdDto deleteProjectMemberByMemberId(Long projectId, Long memberId) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
+        HttpEntity<String> requestEntity = new HttpEntity<>(httpHeaders);
+
+        ResponseEntity<IdDto> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + projectId + "/members/" + memberId,
                 HttpMethod.DELETE,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
