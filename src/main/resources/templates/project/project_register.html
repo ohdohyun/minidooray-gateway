@@ -1,14 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
+    <title>Project Registration</title>
     <meta charset="UTF-8">
-    <title>MiniDooray - 프로젝트 등록</title>
 </head>
 <body>
-<form method="post" action="/project/register">
-  <input placeholder="프로젝트 명">
-  <input type="text" placeholder="프로젝트 설명">
-  <input type="submit">
+<h1>프로젝트 등록</h1>
+<form action="#" th:action="@{/projects/register}" th:object="${projectRegisterDto}" method="post">
+    <label for="name">Project Name:</label><br>
+    <input type="text" id="name" name="name" th:field="*{name}"><br>
+
+    <label for="description">Project Description:</label><br>
+    <textarea id="description" name="description" th:field="*{description}"></textarea><br>
+
+    <input type="submit" value="Submit">
 </form>
 </body>
 </html>

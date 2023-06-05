@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <title>프로젝트 수정</title>
+  <meta charset="UTF-8">
+</head>
+<body>
+<h1>프로젝트 수정</h1>
+<form th:action="@{/projects/{projectId}/modify(projectId=${projectId})}" method="POST">
+  <label for="name">프로젝트 이름:</label><br>
+  <input type="text" id="name" th:field="${projectModifyDto.name}" /><br><br>
+
+  <label for="description">프로젝트 설명:</label><br>
+  <textarea id="description" th:field="${projectModifyDto.description}" ></textarea><br><br>
+
+  <label for="status">프로젝트 상태:</label><br>
+  <select id="status" th:field="${projectModifyDto.status}">
+    <option value="활성">활성</option>
+    <option value="휴면">휴면</option>
+    <option value="종료">종료</option>
+  </select><br><br>
+
+  <input type="submit" value="수정">
+</form>
+</body>
+</html>

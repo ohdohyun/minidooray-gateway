@@ -1,6 +1,7 @@
 package com.nhn.sadari.minidooray.gateway.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MilestoneController {
 
     @GetMapping("/register")
-    public String getMilestoneRegisterForm(@PathVariable Long id) {
+    public String getMilestoneRegisterForm(@PathVariable Long id, Model model) {
 
         return "/milestone/milestone_register";
     }

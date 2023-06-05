@@ -2,9 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Task List</title>
 </head>
 <body>
-task list
+<table>
+    <tr>
+        <th>태그이름</th>
+        <th>수정</th>
+        <th>삭제</th>
+    </tr>
+    <tr th:each="">
+        <td>태그1</td>
+        <td><a th:href="@{/projects/{id}/tags/{tagsId}/update}">수정</a></td>
+        <td><a th:href="@{/projects/{id}/tags/{tagsId}/delete}">삭제</a></td>
+    </tr>
+</table>
 </body>
 </html>

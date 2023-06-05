@@ -29,8 +29,8 @@
         <td th:text="|${stat.count}|">1</td>
         <td><a th:href="@{/projects/{id}(id=${project.id})}" th:text="${project.title}">테스트 제목1</a></td>
         <td><a th:href="@{/projects/{id}(id=${project.id})}" th:text="${project.description}">테스트 제목1</a></td>
-        <td th:text="${project.adminName}">테스트 담당자1></td>
-        <td th:each="tag: ${project.tags}">
+        <td th:text="${project.getmember().getadminName()}">테스트 담당자1></td>
+        <td th:each="tag: ${project.getTag().getName()}">
             <span th:text="${tag.name}"></span>
         </td>
     </tr>
