@@ -7,7 +7,6 @@ Content-Type: application/json
   "name": "tagName"
 }
 
-
 ### 태그 수정
 PUT /api/projects/1/tags/3
 Host: localhost:9090

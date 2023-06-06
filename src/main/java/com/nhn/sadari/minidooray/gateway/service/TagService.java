@@ -1,7 +1,7 @@
 package com.nhn.sadari.minidooray.gateway.service;
 
 import com.nhn.sadari.minidooray.gateway.domain.IdDto;
-import com.nhn.sadari.minidooray.gateway.domain.milestone.MilestoneRegister;
+import com.nhn.sadari.minidooray.gateway.domain.tag.TagRegister;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
@@ -12,17 +12,17 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class MilestoneService {
+public class TagService {
 
     private final RestTemplate restTemplate;
 
-    public IdDto registerMilestone(MilestoneRegister milestoneRegister, Long projectId) {
+    public IdDto registerTag(TagRegister tagRegister, Long projectId) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
 
-        HttpEntity<MilestoneRegister> requestEntity = new HttpEntity<>(milestoneRegister, httpHeaders);
-        ResponseEntity<IdDto> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + projectId + "/milestones",
+        HttpEntity<TagRegister> requestEntity = new HttpEntity<>(tagRegister, httpHeaders);
+        ResponseEntity<IdDto> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + projectId + "/tags",
                 HttpMethod.POST,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
@@ -30,17 +30,18 @@ public class MilestoneService {
         return exchange.getBody();
     }
 
-    public IdDto deleteMilestone(Long projectId, Long milestoneId) {
+    public IdDto deleteTag(Long projectId, Long tagId) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
 
         HttpEntity<String> requestEntity = new HttpEntity<>(httpHeaders);
-        ResponseEntity<IdDto> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + projectId + "/milestones/" + milestoneId,
+        ResponseEntity<IdDto> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + projectId + "/tags/" + tagId,
                 HttpMethod.DELETE,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
                 });
         return exchange.getBody();
     }
+
 }

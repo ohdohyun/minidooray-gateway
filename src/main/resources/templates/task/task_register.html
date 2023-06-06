@@ -1,31 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>Task 등록</title>
 </head>
 <body>
-<form>
-  <label for="title">Title:</label>
-  <input type="text" id="title" name="title"><br><br>
+<h1>업무 등록</h1>
+<form th:action="@{/projects/register}" th:object="${taskRegister}" method="post">
+  <label for="title">Task title:</label><br>
+  <input type="text" id="title" name="title" th:field="*{title}"><br>
 
-  <label for="content">Content:</label>
-  <textarea id="content" name="content"></textarea><br><br>
+  <label for="content">Task content:</label><br>
+  <textarea id="content" name="content" th:field="*{content}"></textarea><br>
 
-  <label for="writerId">Writer ID:</label>
-  <input type="number" id="writerId" name="writerId"><br><br>
+  <label for="writerId">Writer ID:</label><br>
+  <input type="number" id="writerId" name="writerId" th:field="*{writerId}"><br>
 
-  <label for="endDate">End Date:</label>
-  <input type="date" id="endDate" name="endDate"><br><br>
+  <label for="endDate">End date:</label><br>
+  <input type="date" id="endDate" name="endDate" th:field="*{endDate}"><br>
 
-  <label for="memberIds">Member IDs:</label>
-  <input id="memberIds" name="memberIds" type="text"><br><br>
+  <label for="memberIds">Member IDs:</label><br>
+  <!-- Note: This input assumes that you want to enter member IDs separated by commas. -->
+  <input type="text" id="memberIds" name="memberIds" th:field="*{memberIds}"><br>
 
-  <label for="milestoneId">Milestone ID:</label>
-  <input type="number" id="milestoneId" name="milestoneId"><br><br>
+  <label for="milestoneId">Milestone ID:</label><br>
+  <input type="number" id="milestoneId" name="milestoneId" th:field="*{milestoneId}"><br>
 
-  <label for="tagIds">Tag IDs:</label>
-  <input id="tagIds" name="tagIds" ><br><br>
+  <label for="tagIds">Tag IDs:</label><br>
+  <!-- Note: This input assumes that you want to enter tag IDs separated by commas. -->
+  <input type="text" id="tagIds" name="tagIds" th:field="*{tagIds}"><br>
 
   <input type="submit" value="Submit">
 </form>
