@@ -2,6 +2,7 @@ package com.nhn.sadari.minidooray.gateway.config;
 
 import com.nhn.sadari.minidooray.gateway.auth.CustomLoginSuccessHandler;
 import com.nhn.sadari.minidooray.gateway.auth.CustomUserDetailsService;
+import com.nhn.sadari.minidooray.gateway.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,25 +22,26 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 public class SecurityConfig {
 
     private final RedisTemplate redisTemplate;
+    private final AccountService accountService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeRequests()
-                    .antMatchers("/login", "/members/**", "/index").permitAll()
-                    .antMatchers("/posts/**").authenticated()
-                    .and()
+                .antMatchers("/login", "/members/**", "/index").permitAll()
+                .antMatchers("/posts/**").authenticated()
+                .and()
                 .formLogin()
 //                    .loginPage("/login")
 //                    .loginProcessingUrl("/normal-login")
-                    //.usernameParameter("loginId")
-                    //.passwordParameter("password")
-                    .successHandler(customLoginSuccessHandler())
-                    .and()
+                //.usernameParameter("loginId")
+                //.passwordParameter("password")
+                .successHandler(customLoginSuccessHandler())
+                .and()
                 .logout()
-                    .logoutUrl("/logout")
-                    .deleteCookies("JSESSIONID")
-                    .and()
+                .logoutUrl("/logout")
+                .deleteCookies("JSESSIONID")
+                .and()
                 .build();
     }
 
@@ -60,7 +62,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationSuccessHandler customLoginSuccessHandler() {
-        return new CustomLoginSuccessHandler(redisTemplate);
+        return new CustomLoginSuccessHandler();
     }
 
 
