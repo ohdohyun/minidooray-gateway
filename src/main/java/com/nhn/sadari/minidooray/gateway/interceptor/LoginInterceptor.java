@@ -21,8 +21,10 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Cookie cookie = CookieUtils.getSessionCookie("sessionId", request.getCookies());
 //        String loginId = String.valueOf(redisTemplate.opsForValue().get(cookie.getValue()));
-        LoginRequest loginRequest = (LoginRequest) redisTemplate.opsForValue().get(cookie.getValue());
-        request.setAttribute("loginId", loginRequest.getLoginId());
+
+        LoginRequest loginRequest = (LoginRequest)(redisTemplate.opsForValue().get(cookie.getValue()));
+//        System.out.println("::::::loginId = " + loginId);
+        request.setAttribute("loginRequest", loginRequest);
 
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }

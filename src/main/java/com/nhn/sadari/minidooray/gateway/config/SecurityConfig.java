@@ -21,8 +21,6 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final RedisTemplate redisTemplate;
-    private final AccountService accountService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -36,7 +34,7 @@ public class SecurityConfig {
 //                    .loginProcessingUrl("/normal-login")
                 //.usernameParameter("loginId")
                 //.passwordParameter("password")
-                .successHandler(customLoginSuccessHandler())
+                .successHandler(customLoginSuccessHandler(null, null))
                 .and()
                 .logout()
                 .logoutUrl("/logout")
@@ -59,10 +57,9 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-
     @Bean
-    public AuthenticationSuccessHandler customLoginSuccessHandler() {
-        return new CustomLoginSuccessHandler();
+    public AuthenticationSuccessHandler customLoginSuccessHandler(RedisTemplate redisTemplate, AccountService accountService) {
+        return new CustomLoginSuccessHandler(redisTemplate, accountService);
     }
 
 

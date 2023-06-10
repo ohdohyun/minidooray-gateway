@@ -29,7 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("UsernameNotFoundException");
         }
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("user");
-        return new User(account.getUsername(), account.getPassword(),
+        return new User(account.getLoginId(), account.getPassword(),
                 Collections.singletonList(authority));
     }
 
