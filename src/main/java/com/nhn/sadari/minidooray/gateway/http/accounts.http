@@ -4,31 +4,35 @@ GET /api/accounts/{id}
 Host: localhost:8080
 Content-Type: application/json
 
-### 회원가입
+
+### 계정 생성 요청
 POST /api/accounts
-Host: localhost:8080
+Host: localhost:7070
 Content-Type: application/json
 
 {
-  "loginId": "",
-  "password": "",
-  "name": "",
-  "email": ""
+  "loginId": "test2",
+  "password": "pw2",
+  "email": "TT2@gmail.com",
+  "name": "TT2",
+  "authority": "관리자"
 }
 
-### 회원탈퇴
+### 계정 수정 요청
+PUT /api/accounts/6
+Host: localhost:7070
+Content-Type: application/json
+
+{
+  "loginId": "test2",
+  "password": "pw2",
+  "email": "TT2@gmail.com",
+  "name": "TT2",
+  "memberStatus": "휴면"
+}
+
+### 계정 삭제 요청
 DELETE /api/accounts/{id}
-Host: localhost:8080
-Content-Type: application/json
+Host: localhost:7070
 
-### 수정
-PUT /api/accounts/{id}
-Host: localhost:8080
-Content-Type: application/json
 
-{
-  "loginId": "",
-  "password": "",
-  "name": "",
-  "email": ""
-}

@@ -77,15 +77,12 @@ public class ProjectController {
     public String getProjectMemberRegisterForm(@PathVariable Long projectId, Model model) {
 
         model.addAttribute("projectId", projectId);
-        model.addAttribute("projectMemberRegister", new ProjectMemberRegister());
         return "project/project_member_register";
     }
 
     @PostMapping("/{projectId}/members/register")
     public String doProjectMemberRegister(@ModelAttribute ProjectMemberRegister projectMemberRegister, @PathVariable Long projectId) {
-
         projectService.createProjectMember(projectMemberRegister, projectId);
-
         return "/index";
     }
 

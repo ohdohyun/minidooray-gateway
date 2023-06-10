@@ -6,11 +6,11 @@
 </head>
 <body>
 <h2>멤버 등록</h2>
-<form action="#" th:action="@{/projects/{projectId}/members/register(projectId=${projectId})}" th:object="${projectMemberRegister}" method="post">
-  <p>Member ID: <input type="text" th:field="*{memberId}"/></p>
-  <p>Member Name: <input type="text" th:field="*{memberName}"/></p>
+<form action="#" th:action="@{/projects/{projectId}/members/register(projectId=${projectId})}" method="post">
+  <p>Member ID: <input type="text" name="memberId"/></p>
+  <p>Member Name: <input type="text" name="memberName"/></p>
   <p>Role:
-    <select th:field="*{role}">
+    <select name="role">
       <option th:each="role : ${T(com.nhn.sadari.minidooray.gateway.enumclass.ProjectMemberRoleType).values()}"
               th:value="${role}"
               th:text="${role}">Role</option>
