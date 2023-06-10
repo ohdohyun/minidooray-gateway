@@ -1,7 +1,7 @@
 package com.nhn.sadari.minidooray.gateway.controller;
 
 import com.nhn.sadari.minidooray.gateway.domain.account.AccountRegister;
-import com.nhn.sadari.minidooray.gateway.domain.account.AccountUpdate;
+import com.nhn.sadari.minidooray.gateway.domain.account.AccountModify;
 import com.nhn.sadari.minidooray.gateway.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -36,19 +36,16 @@ public class AccountController {
     @GetMapping("/modify/{accountId}")
     public String accountModify(@PathVariable Long accountId, Model model) {
         // 계정 정보 불러오기
+        model.addAttribute("accountId", accountId);
         model.addAttribute("accountUpdate", accountService.getAccountUpdate(accountId));
         return "/account/account_modify";
     }
 
     @PostMapping("/modify/{accountId}")
-    public String doModify(@PathVariable Long accountId, @ModelAttribute AccountUpdate accountUpdate) {
+    public String doModify(@PathVariable Long accountId, @ModelAttribute AccountModify accountUpdate) {
+        AccountModify accountUpdate1 = accountUpdate;
         accountService.doAccountUpdate(accountUpdate, accountId);
         return "/index";
     }
 
-    @GetMapping("/{accountId}")
-    public String accountUpdate(@ModelAttribute Long accountId) {
-
-        return "/account/account_view";
-    }
 }

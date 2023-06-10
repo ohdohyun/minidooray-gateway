@@ -6,11 +6,10 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class AccountUpdate {
-
-    private String loginId;
-    private String password;
-    private String email;
-    private String name;
-    private MemberStatusType status;
+public class LoginRequest {
+    Long accountId;
+    String loginId;
+    String password;
+    String username;
+    MemberStatusType status;
 }

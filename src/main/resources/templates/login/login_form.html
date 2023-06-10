@@ -6,10 +6,13 @@
 </head>
 <body>
 <h1>Login</h1>
-<form method="post" action="/login">
-    <input name="id" placeholder="아이디"><br/>
+<form method="post" action="/normal-login">
+    <input name="loginId" placeholder="아이디"><br/>
     <input name="password" type="password" placeholder="비밀번호"><br/>
     <input type="submit">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 </form>
+// git 로그인 만들기
+
 </body>
 </html>
