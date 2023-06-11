@@ -80,8 +80,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationSuccessHandler gitLoginSuccessHandler(RedisTemplate redisTemplate, AccountService accountService) {
-        return new GitLoginSuccessHandler(redisTemplate, accountService);
+    public AuthenticationSuccessHandler gitLoginSuccessHandler(RedisTemplate redisTemplate, OAuth2AuthorizedClientService authorizedClientService) {
+        return new GitLoginSuccessHandler(redisTemplate, authorizedClientService);
     }
 
     @Bean
