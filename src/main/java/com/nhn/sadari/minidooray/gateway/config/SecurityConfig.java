@@ -2,6 +2,7 @@ package com.nhn.sadari.minidooray.gateway.config;
 
 import com.nhn.sadari.minidooray.gateway.auth.CustomLoginSuccessHandler;
 import com.nhn.sadari.minidooray.gateway.auth.CustomUserDetailsService;
+import com.nhn.sadari.minidooray.gateway.auth.GitLoginSuccessHandler;
 import com.nhn.sadari.minidooray.gateway.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -11,8 +12,16 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
@@ -21,6 +30,12 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 @EnableWebSecurity
 public class SecurityConfig {
 
+//    @Bean
+//    public OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager(){
+//        return new OAuth2AuthorizedClientManager(
+//
+//        );
+//    };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -30,11 +45,18 @@ public class SecurityConfig {
                 .antMatchers("/test").authenticated()
                 .and()
                 .formLogin()
-//                    .loginPage("/login")
+                    .loginPage("/login")
 //                    .loginProcessingUrl("/normal-login")
                 //.usernameParameter("loginId")
                 //.passwordParameter("password")
                 .successHandler(customLoginSuccessHandler(null, null))
+                .and()
+                .oauth2Login()
+                .defaultSuccessUrl("/")
+                .loginPage("/login")
+                .clientRegistrationRepository(clientRegistrationRepository())
+                .authorizedClientService(authorizedClientService())
+                .successHandler(gitLoginSuccessHandler(null, null))
                 .and()
                 .logout()
                 .logoutUrl("/logout")
@@ -58,8 +80,34 @@ public class SecurityConfig {
     }
 
     @Bean
+    public AuthenticationSuccessHandler gitLoginSuccessHandler(RedisTemplate redisTemplate, AccountService accountService) {
+        return new GitLoginSuccessHandler(redisTemplate, accountService);
+    }
+
+    @Bean
     public AuthenticationSuccessHandler customLoginSuccessHandler(RedisTemplate redisTemplate, AccountService accountService) {
         return new CustomLoginSuccessHandler(redisTemplate, accountService);
+    }
+
+    @Bean
+    public ClientRegistrationRepository clientRegistrationRepository() {
+        return new InMemoryClientRegistrationRepository(github());
+    }
+
+    @Bean
+    public OAuth2AuthorizedClientService authorizedClientService() {
+        return new InMemoryOAuth2AuthorizedClientService(clientRegistrationRepository());
+    }
+
+    private ClientRegistration github() {
+        return CommonOAuth2Provider.GITHUB.getBuilder("github")
+                .userNameAttributeName("name")
+                .clientId("da88f02bee356fe1a736")
+                .clientSecret("9973b9769ef2a463e0fc4fd83af4ca00e23d67e7")
+                .scope("user:email")
+                .redirectUri("{baseUrl}/login/oauth2/code/github")
+                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                .build();
     }
 
 

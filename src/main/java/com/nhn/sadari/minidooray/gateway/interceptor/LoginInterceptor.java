@@ -22,7 +22,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         Cookie cookie = CookieUtils.getSessionCookie("sessionId", request.getCookies());
 
         AccountInfo accountInfo = (AccountInfo)(redisTemplate.opsForValue().get(cookie.getValue()));
-        request.setAttribute("loginRequest", accountInfo);
+        request.setAttribute("accountInfo", accountInfo);
 
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
