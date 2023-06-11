@@ -1,6 +1,6 @@
 package com.nhn.sadari.minidooray.gateway.auth;
 
-import com.nhn.sadari.minidooray.gateway.domain.account.AccountModify;
+import com.nhn.sadari.minidooray.gateway.domain.account.AccountInfo;
 import com.nhn.sadari.minidooray.gateway.domain.account.LoginRequest;
 import com.nhn.sadari.minidooray.gateway.service.AccountService;
 import lombok.RequiredArgsConstructor;
@@ -22,14 +22,13 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        // #TODO
-        LoginRequest account = accountService.getAccountInfo(username);
+        LoginRequest info = accountService.getLoginInfo(username);
 
-        if (account == null) {
+        if (info == null) {
             throw new UsernameNotFoundException("UsernameNotFoundException");
         }
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("user");
-        return new User(account.getLoginId(), account.getPassword(),
+        return new User(info.getLoginId(), info.getPassword(),
                 Collections.singletonList(authority));
     }
 

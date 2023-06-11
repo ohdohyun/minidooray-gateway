@@ -3,6 +3,7 @@ package com.nhn.sadari.minidooray.gateway.service;
 import com.nhn.sadari.minidooray.gateway.domain.IdDto;
 import com.nhn.sadari.minidooray.gateway.domain.account.AccountRegister;
 import com.nhn.sadari.minidooray.gateway.domain.account.AccountModify;
+import com.nhn.sadari.minidooray.gateway.domain.account.AccountInfo;
 import com.nhn.sadari.minidooray.gateway.domain.account.LoginRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
@@ -77,16 +78,31 @@ public class AccountService {
         return exchange.getBody();
     }
 
-    public LoginRequest getAccountInfo(String loginId) {
+    public AccountInfo getAccountInfo(String loginId) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
 
         HttpEntity requestEntity = new HttpEntity<>(httpHeaders);
-        ResponseEntity<LoginRequest> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "7070" + "/api/accounts?loginId=" + loginId,
+        ResponseEntity<AccountInfo> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "7070" + "/api/auth/" + loginId,
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
                 });
         return exchange.getBody();
     }
+
+    public LoginRequest getLoginInfo(String loginId) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
+
+        HttpEntity requestEntity = new HttpEntity<>(httpHeaders);
+        ResponseEntity<LoginRequest> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "7070" + "/api/login?loginId=" + loginId,
+                HttpMethod.GET,
+                requestEntity,
+                new ParameterizedTypeReference<>() {
+                });
+        return exchange.getBody();
+    }
+
+
 }
