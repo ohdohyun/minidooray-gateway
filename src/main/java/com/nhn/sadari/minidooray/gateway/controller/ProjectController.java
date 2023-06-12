@@ -27,11 +27,7 @@ public class ProjectController {
     }
 
     @PostMapping("/register")
-    public String doRegister(@ModelAttribute ProjectRegisterDto projectRegisterDto) {
-
-        // #Todo 로그인 이후 고치기
-        projectRegisterDto.setMemberId(1L);
-        projectRegisterDto.setMemberName("홍길동");
+    public String doRegister(@ModelAttribute ProjectRegisterDto projectRegisterDto, @RequestParam Long memberId) {
 
         IdDto result = projectService.create(projectRegisterDto);
         return "/index";

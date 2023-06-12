@@ -1,9 +1,10 @@
 package com.nhn.sadari.minidooray.gateway.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.nhn.sadari.minidooray.gateway.domain.*;
+import com.nhn.sadari.minidooray.gateway.domain.IdDto;
 import com.nhn.sadari.minidooray.gateway.domain.common.CommonResponse;
 import com.nhn.sadari.minidooray.gateway.domain.project.*;
+import com.nhn.sadari.minidooray.gateway.exception.AlreadyExistsException;
+import com.nhn.sadari.minidooray.gateway.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
@@ -25,12 +26,17 @@ public class ProjectService {
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
 
         HttpEntity<ProjectRegisterDto> requestEntity = new HttpEntity<>(projectRegisterDto, httpHeaders);
-        ResponseEntity<IdDto> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects",
+        ResponseEntity<CommonResponse<IdDto>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects",
                 HttpMethod.POST,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
                 });
-        return exchange.getBody();
+        CommonResponse<?> response = exchange.getBody();
+
+        if (201 != response.getHeader().getResultCode()) {
+            throw new AlreadyExistsException(response.getHeader().getResultMessage());
+        }
+        return (IdDto) response.getResult().get(0);
     }
 
     public ProjectGet findByProjectId(Long id) {
@@ -39,15 +45,19 @@ public class ProjectService {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
 
-        HttpEntity<String> requestEntity = new HttpEntity<>(httpHeaders);
-        ResponseEntity<ProjectGet> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + id,
+        HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
+        ResponseEntity<CommonResponse<ProjectGet>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + id,
                 HttpMethod.GET,
                 requestEntity,
-                ProjectGet.class,
                 new ParameterizedTypeReference<>() {
                 });
 
-        return exchange.getBody();
+        CommonResponse<?> response = exchange.getBody();
+
+        if (200 != response.getHeader().getResultCode()) {
+            throw new NotFoundException(response.getHeader().getResultMessage());
+        }
+        return (ProjectGet) response.getResult().get(0);
     }
 
     public IdDto modify(ProjectModifyDto projectModifyDto, Long projectId) {
@@ -56,12 +66,18 @@ public class ProjectService {
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
 
         HttpEntity<ProjectModifyDto> requestEntity = new HttpEntity<>(projectModifyDto, httpHeaders);
-        ResponseEntity<IdDto> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + projectId,
+        ResponseEntity<CommonResponse<IdDto>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + projectId,
                 HttpMethod.PUT,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
                 });
-        return exchange.getBody();
+
+        CommonResponse<?> response = exchange.getBody();
+
+        if (200 != response.getHeader().getResultCode()) {
+            throw new NotFoundException(response.getHeader().getResultMessage());
+        }
+        return (IdDto) response.getResult().get(0);
     }
 
     public IdDto delete(Long projectId) {
@@ -69,12 +85,17 @@ public class ProjectService {
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
         HttpEntity<String> requestEntity = new HttpEntity<>(httpHeaders);
 
-        ResponseEntity<IdDto> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + projectId,
+        ResponseEntity<CommonResponse<IdDto>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + projectId,
                 HttpMethod.DELETE,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
                 });
-        return exchange.getBody();
+        CommonResponse<?> response = exchange.getBody();
+
+        if (200 != response.getHeader().getResultCode()) {
+            throw new NotFoundException(response.getHeader().getResultMessage());
+        }
+        return (IdDto) response.getResult().get(0);
     }
 
     public List<ProjectListGet> getProjectsByMemberId(Long memberId) {
@@ -82,20 +103,15 @@ public class ProjectService {
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
         HttpEntity<String> requestEntity = new HttpEntity<>(httpHeaders);
 
-        ResponseEntity<CommonResponse> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/members/" + memberId,
+        ResponseEntity<CommonResponse<?>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/members/" + memberId,
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
                 });
 
 
-//        Object o = exchange.getBody();
-        CommonResponse response = exchange.getBody();
-//
-//        return (List<ProjectListGet>) response.getResult().get(0);
+        CommonResponse<?> response = exchange.getBody();
         return (List<ProjectListGet>) response.getResult();
-//
-//        return exchange.getBody();
     }
 
     public IdDto createProjectMember(ProjectMemberRegister projectMemberRegister, Long projectId) {
@@ -103,12 +119,17 @@ public class ProjectService {
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
         HttpEntity<ProjectMemberRegister> requestEntity = new HttpEntity<>(projectMemberRegister, httpHeaders);
 
-        ResponseEntity<IdDto> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + projectId + "/members",
+        ResponseEntity<CommonResponse<IdDto>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + projectId + "/members",
                 HttpMethod.POST,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
                 });
-        return exchange.getBody();
+        CommonResponse<?> response = exchange.getBody();
+
+        if (201 != response.getHeader().getResultCode()) {
+            throw new AlreadyExistsException(response.getHeader().getResultMessage());
+        }
+        return (IdDto) response.getResult().get(0);
     }
 
     public IdDto deleteProjectMemberByMemberId(Long projectId, Long memberId) {
@@ -116,12 +137,17 @@ public class ProjectService {
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
         HttpEntity<String> requestEntity = new HttpEntity<>(httpHeaders);
 
-        ResponseEntity<IdDto> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + projectId + "/members/" + memberId,
+        ResponseEntity<CommonResponse<IdDto>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + projectId + "/members/" + memberId,
                 HttpMethod.DELETE,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
                 });
-        return exchange.getBody();
+        CommonResponse<?> response = exchange.getBody();
+
+        if (200 != response.getHeader().getResultCode()) {
+            throw new NotFoundException(response.getHeader().getResultMessage());
+        }
+        return (IdDto) response.getResult().get(0);
     }
 
 

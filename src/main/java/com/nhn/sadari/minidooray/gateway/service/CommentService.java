@@ -2,6 +2,9 @@ package com.nhn.sadari.minidooray.gateway.service;
 
 import com.nhn.sadari.minidooray.gateway.domain.IdDto;
 import com.nhn.sadari.minidooray.gateway.domain.comment.CommentRegister;
+import com.nhn.sadari.minidooray.gateway.domain.common.CommonResponse;
+import com.nhn.sadari.minidooray.gateway.exception.AlreadyExistsException;
+import com.nhn.sadari.minidooray.gateway.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
@@ -22,12 +25,19 @@ public class CommentService {
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
 
         HttpEntity<CommentRegister> requestEntity = new HttpEntity<>(commentRegister, httpHeaders);
-        ResponseEntity<IdDto> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/tasks/" + taskId + "/comments",
+        ResponseEntity<CommonResponse<IdDto>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/tasks/" + taskId + "/comments",
                 HttpMethod.POST,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
                 });
-        return exchange.getBody();
+
+        CommonResponse<?> response = exchange.getBody();
+
+        if (201 != response.getHeader().getResultCode()) {
+            throw new AlreadyExistsException(response.getHeader().getResultMessage());
+        }
+        return (IdDto) response.getResult().get(0);
+
     }
 
     public IdDto deleteComment(Long taskId, Long commentId) {
@@ -35,13 +45,19 @@ public class CommentService {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
 
-        HttpEntity<String> requestEntity = new HttpEntity<>(httpHeaders);
-        ResponseEntity<IdDto> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/tasks/" + taskId + "/comments/" + commentId,
+        HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
+        ResponseEntity<CommonResponse<IdDto>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/tasks/" + taskId + "/comments/" + commentId,
                 HttpMethod.DELETE,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
                 });
-        return exchange.getBody();
+
+        CommonResponse<?> response = exchange.getBody();
+
+        if (200 != response.getHeader().getResultCode()) {
+            throw new NotFoundException(response.getHeader().getResultMessage());
+        }
+        return (IdDto) response.getResult().get(0);
     }
 
 }

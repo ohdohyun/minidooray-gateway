@@ -12,6 +12,9 @@
 
     <label for="description">Project Description:</label><br>
     <textarea id="description" name="description" th:field="*{description}"></textarea><br>
+    <input type="hidden" th:value="${accountRedis.accountId}" name="memberId" />
+    <input type="hidden" th:value="${accountRedis.username}" name="memberName" />
+
 
     <input type="submit" value="Submit">
 </form>

@@ -29,6 +29,7 @@ public class GitService {
                 requestEntity,
                 new ParameterizedTypeReference<>() {
                 });
+        // TODO result 넘길 때 이메일 둘 다 넘기기로 수정
         String result = exchange.getBody()[1].get("email").toString();
 
         return result;

@@ -1,7 +1,10 @@
 package com.nhn.sadari.minidooray.gateway.service;
 
 import com.nhn.sadari.minidooray.gateway.domain.IdDto;
+import com.nhn.sadari.minidooray.gateway.domain.common.CommonResponse;
 import com.nhn.sadari.minidooray.gateway.domain.tag.TagRegister;
+import com.nhn.sadari.minidooray.gateway.exception.AlreadyExistsException;
+import com.nhn.sadari.minidooray.gateway.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
@@ -22,12 +25,17 @@ public class TagService {
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
 
         HttpEntity<TagRegister> requestEntity = new HttpEntity<>(tagRegister, httpHeaders);
-        ResponseEntity<IdDto> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + projectId + "/tags",
+        ResponseEntity<CommonResponse<IdDto>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + projectId + "/tags",
                 HttpMethod.POST,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
                 });
-        return exchange.getBody();
+        CommonResponse<?> response = exchange.getBody();
+
+        if (201 != response.getHeader().getResultCode()) {
+            throw new AlreadyExistsException(response.getHeader().getResultMessage());
+        }
+        return (IdDto) response.getResult().get(0);
     }
 
     public IdDto deleteTag(Long projectId, Long tagId) {
@@ -36,12 +44,17 @@ public class TagService {
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
 
         HttpEntity<String> requestEntity = new HttpEntity<>(httpHeaders);
-        ResponseEntity<IdDto> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + projectId + "/tags/" + tagId,
+        ResponseEntity<CommonResponse<IdDto>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + projectId + "/tags/" + tagId,
                 HttpMethod.DELETE,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
                 });
-        return exchange.getBody();
+        CommonResponse<?> response = exchange.getBody();
+
+        if (200 != response.getHeader().getResultCode()) {
+            throw new NotFoundException(response.getHeader().getResultMessage());
+        }
+        return (IdDto) response.getResult().get(0);
     }
 
 }

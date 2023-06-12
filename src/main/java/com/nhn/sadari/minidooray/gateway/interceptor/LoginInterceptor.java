@@ -22,8 +22,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         Cookie cookie = CookieUtils.getSessionCookie("sessionId", request.getCookies());
 
         AccountRedis accountRedis = (AccountRedis)(redisTemplate.opsForValue().get(cookie.getValue()));
-        request.setAttribute("accountInfo", accountRedis);
-
+        request.setAttribute("accountRedis", accountRedis);
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 }

@@ -6,11 +6,12 @@ import com.nhn.sadari.minidooray.gateway.domain.account.AccountRegister;
 import com.nhn.sadari.minidooray.gateway.domain.account.AccountInfo;
 import com.nhn.sadari.minidooray.gateway.domain.account.LoginRequest;
 import com.nhn.sadari.minidooray.gateway.domain.common.CommonResponse;
-import com.nhn.sadari.minidooray.gateway.exception.UserAlreadyException;
+import com.nhn.sadari.minidooray.gateway.exception.AlreadyExistsException;
+import com.nhn.sadari.minidooray.gateway.exception.NotFoundException;
+import com.nhn.sadari.minidooray.gateway.exception.UserUpdateFailException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -38,29 +39,33 @@ public class AccountService {
                 new ParameterizedTypeReference<>() {
                 });
 
-        CommonResponse response = exchange.getBody();
+        CommonResponse<?> response = exchange.getBody();
 
         // 생성 했으면 return
         if (201 != response.getHeader().getResultCode()) {
-            //#TODO 익셉션 만들고 수정
-            throw new UserAlreadyException(response.getHeader().getResultMessage());
+            throw new AlreadyExistsException(response.getHeader().getResultMessage());
         }
         return (IdDto) response.getResult().get(0);
     }
 
-    public CommonResponse<IdDto> deleteAccount(Long accountId) {
+    public IdDto deleteAccount(Long accountId) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
 
-        HttpEntity<String> requestEntity = new HttpEntity<>(httpHeaders);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
         ResponseEntity<CommonResponse<IdDto>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "7070" + "/api/accounts/" + accountId,
                 HttpMethod.DELETE,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
                 });
 
+        CommonResponse<?> response = exchange.getBody();
 
-        return exchange.getBody();
+        // 생성 했으면 return
+        if (200 != response.getHeader().getResultCode()) {
+            throw new NotFoundException(response.getHeader().getResultMessage());
+        }
+        return (IdDto) response.getResult().get(0);
     }
 
     public AccountInfo getAccountUpdate(Long accountId) {
@@ -68,7 +73,7 @@ public class AccountService {
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
 
 
-        HttpEntity<String> requestEntity = new HttpEntity<>(httpHeaders);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
         ResponseEntity<CommonResponse<AccountInfo>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "7070" + "/api/accounts/" + accountId,
                 HttpMethod.GET,
                 requestEntity,
@@ -76,16 +81,16 @@ public class AccountService {
                 });
 
         // 예외
-        CommonResponse response = exchange.getBody();
+        CommonResponse<?> response = exchange.getBody();
 
         if (200 != response.getHeader().getResultCode()) {
-            throw new UsernameNotFoundException(response.getHeader().getResultMessage());
+            throw new NotFoundException(response.getHeader().getResultMessage());
         }
 
-        return exchange.getBody().getResult().get(0);
+        return (AccountInfo) response.getResult().get(0);
     }
 
-    public CommonResponse<IdDto> doAccountUpdate(AccountInfo accountUpdate, Long accountId) {
+    public IdDto doAccountUpdate(AccountInfo accountUpdate, Long accountId) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
@@ -96,14 +101,19 @@ public class AccountService {
                 requestEntity,
                 new ParameterizedTypeReference<>() {
                 });
-        return exchange.getBody();
+        CommonResponse<?> response = exchange.getBody();
+
+        if (200 != response.getHeader().getResultCode()) {
+            throw new UserUpdateFailException(response.getHeader().getResultMessage());
+        }
+        return (IdDto) response.getResult().get(0);
     }
 
     public AccountRedis getAccountRedis(String loginId) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
 
-        HttpEntity requestEntity = new HttpEntity<>(httpHeaders);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
         ResponseEntity<CommonResponse<AccountRedis>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "7070" + "/api/auth/" + loginId,
                 HttpMethod.GET,
                 requestEntity,
@@ -112,10 +122,12 @@ public class AccountService {
 
 
         // 여기도 예외처리.
-        CommonResponse response = exchange.getBody();
+        CommonResponse<?> response = exchange.getBody();
 
         if (404 == response.getHeader().getResultCode()) {
             return new AccountRedis();
+        } else if (200!= response.getHeader().getResultCode()) {
+            throw new NotFoundException(response.getHeader().getResultMessage());
         } else {
             return (AccountRedis) response.getResult().get(0);
         }
@@ -125,14 +137,18 @@ public class AccountService {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
 
-        HttpEntity requestEntity = new HttpEntity<>(httpHeaders);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
         ResponseEntity<CommonResponse<LoginRequest>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "7070" + "/api/login?loginId=" + loginId,
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
                 });
-        // #TODO null 고치기
-        return (LoginRequest) exchange.getBody().getResult().get(0);
+        CommonResponse<?> response = exchange.getBody();
+
+        if (200 != response.getHeader().getResultCode()) {
+            throw new NotFoundException(response.getHeader().getResultMessage());
+        }
+        return (LoginRequest) response.getResult().get(0);
     }
 
 }
