@@ -1,6 +1,8 @@
 package com.nhn.sadari.minidooray.gateway.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.nhn.sadari.minidooray.gateway.domain.*;
+import com.nhn.sadari.minidooray.gateway.domain.common.CommonResponse;
 import com.nhn.sadari.minidooray.gateway.domain.project.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -80,12 +82,20 @@ public class ProjectService {
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
         HttpEntity<String> requestEntity = new HttpEntity<>(httpHeaders);
 
-        ResponseEntity<List<ProjectListGet>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/members/" + memberId,
+        ResponseEntity<CommonResponse> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/members/" + memberId,
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
                 });
-        return exchange.getBody();
+
+
+//        Object o = exchange.getBody();
+        CommonResponse response = exchange.getBody();
+//
+//        return (List<ProjectListGet>) response.getResult().get(0);
+        return (List<ProjectListGet>) response.getResult();
+//
+//        return exchange.getBody();
     }
 
     public IdDto createProjectMember(ProjectMemberRegister projectMemberRegister, Long projectId) {

@@ -12,7 +12,7 @@
     <input type="submit">
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 </form>
-// git 로그인 만들기
+<span th:if="${null != errorMessage}" th:text="${errorMessage}"></span><br/>
 <br/>
 <a href="/oauth2/authorization/github">Git HUB LOGIN</a><br/>
 

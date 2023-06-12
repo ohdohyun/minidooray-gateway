@@ -1,6 +1,5 @@
 package com.nhn.sadari.minidooray.gateway.auth;
 
-import com.nhn.sadari.minidooray.gateway.domain.account.AccountInfo;
 import com.nhn.sadari.minidooray.gateway.domain.account.LoginRequest;
 import com.nhn.sadari.minidooray.gateway.service.AccountService;
 import lombok.RequiredArgsConstructor;

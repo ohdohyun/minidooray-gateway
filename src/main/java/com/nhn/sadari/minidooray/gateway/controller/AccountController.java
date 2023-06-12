@@ -1,7 +1,7 @@
 package com.nhn.sadari.minidooray.gateway.controller;
 
 import com.nhn.sadari.minidooray.gateway.domain.account.AccountRegister;
-import com.nhn.sadari.minidooray.gateway.domain.account.AccountModify;
+import com.nhn.sadari.minidooray.gateway.domain.account.AccountInfo;
 import com.nhn.sadari.minidooray.gateway.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -42,8 +42,8 @@ public class AccountController {
     }
 
     @PostMapping("/modify/{accountId}")
-    public String doModify(@PathVariable Long accountId, @ModelAttribute AccountModify accountUpdate) {
-        AccountModify accountUpdate1 = accountUpdate;
+    public String doModify(@PathVariable Long accountId, @ModelAttribute AccountInfo accountUpdate) {
+        AccountInfo accountUpdate1 = accountUpdate;
         accountService.doAccountUpdate(accountUpdate, accountId);
         return "/index";
     }

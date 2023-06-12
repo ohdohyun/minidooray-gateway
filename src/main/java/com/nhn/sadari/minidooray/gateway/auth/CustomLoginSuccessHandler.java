@@ -1,6 +1,6 @@
 package com.nhn.sadari.minidooray.gateway.auth;
 
-import com.nhn.sadari.minidooray.gateway.domain.account.AccountInfo;
+import com.nhn.sadari.minidooray.gateway.domain.account.AccountRedis;
 import com.nhn.sadari.minidooray.gateway.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 
@@ -27,15 +28,19 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
         HttpSession session = request.getSession();
         session.setAttribute("username", authentication.getName());
-//        session.setAttribute("accountId", authentication.getAuthorities());
 
-        AccountInfo accountInfo = accountService.getAccountInfo(authentication.getName());
+        // AccountRedis 바꾸기
+        AccountRedis accountRedis = accountService.getAccountRedis(authentication.getName());
+        // 계정이 없으면 다시 로그인 페이지로 보내기
+        if (Objects.isNull(accountRedis)) {
+            response.sendRedirect("/login");
+        }
 
-        // 쿠키 to 브라우저
+        // 쿠키 브라우저에 저장
         response.addCookie(new Cookie("sessionId", session.getId()));
 
         //레디스 처리 1시간 후 삭제
-        redisTemplate.opsForValue().set(session.getId(), accountInfo);
+        redisTemplate.opsForValue().set(session.getId(), accountRedis);
         redisTemplate.expire(session.getId(), 1, TimeUnit.HOURS);
 
         response.sendRedirect("/");

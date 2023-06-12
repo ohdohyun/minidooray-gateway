@@ -3,8 +3,10 @@ package com.nhn.sadari.minidooray.gateway.domain.project;
 import com.nhn.sadari.minidooray.gateway.enumclass.ProjectStatusType;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class ProjectListGet {
 
     private Long id;

@@ -1,7 +1,7 @@
 package com.nhn.sadari.minidooray.gateway.interceptor;
 
 import com.nhn.sadari.minidooray.gateway.Utils.CookieUtils;
-import com.nhn.sadari.minidooray.gateway.domain.account.AccountInfo;
+import com.nhn.sadari.minidooray.gateway.domain.account.AccountRedis;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -21,8 +21,8 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Cookie cookie = CookieUtils.getSessionCookie("sessionId", request.getCookies());
 
-        AccountInfo accountInfo = (AccountInfo)(redisTemplate.opsForValue().get(cookie.getValue()));
-        request.setAttribute("accountInfo", accountInfo);
+        AccountRedis accountRedis = (AccountRedis)(redisTemplate.opsForValue().get(cookie.getValue()));
+        request.setAttribute("accountInfo", accountRedis);
 
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }

@@ -4,6 +4,7 @@ import com.nhn.sadari.minidooray.gateway.auth.CustomLoginSuccessHandler;
 import com.nhn.sadari.minidooray.gateway.auth.CustomUserDetailsService;
 import com.nhn.sadari.minidooray.gateway.auth.GitLoginSuccessHandler;
 import com.nhn.sadari.minidooray.gateway.service.AccountService;
+import com.nhn.sadari.minidooray.gateway.service.GitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +17,6 @@ import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -30,13 +30,6 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 @EnableWebSecurity
 public class SecurityConfig {
 
-//    @Bean
-//    public OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager(){
-//        return new OAuth2AuthorizedClientManager(
-//
-//        );
-//    };
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
@@ -45,10 +38,10 @@ public class SecurityConfig {
                 .antMatchers("/test").authenticated()
                 .and()
                 .formLogin()
-                    .loginPage("/login")
-//                    .loginProcessingUrl("/normal-login")
-                //.usernameParameter("loginId")
-                //.passwordParameter("password")
+                .loginPage("/login")
+                .loginProcessingUrl("/normal-login")
+                .usernameParameter("loginId")
+                .passwordParameter("password")
                 .successHandler(customLoginSuccessHandler(null, null))
                 .and()
                 .oauth2Login()
@@ -56,7 +49,7 @@ public class SecurityConfig {
                 .loginPage("/login")
                 .clientRegistrationRepository(clientRegistrationRepository())
                 .authorizedClientService(authorizedClientService())
-                .successHandler(gitLoginSuccessHandler(null, null))
+                .successHandler(gitLoginSuccessHandler(null, null, null, null))
                 .and()
                 .logout()
                 .logoutUrl("/logout")
@@ -80,8 +73,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationSuccessHandler gitLoginSuccessHandler(RedisTemplate redisTemplate, OAuth2AuthorizedClientService authorizedClientService) {
-        return new GitLoginSuccessHandler(redisTemplate, authorizedClientService);
+    public AuthenticationSuccessHandler gitLoginSuccessHandler(RedisTemplate redisTemplate, OAuth2AuthorizedClientService authorizedClientService, GitService gitService, AccountService accountService) {
+        return new GitLoginSuccessHandler(redisTemplate, authorizedClientService, gitService, accountService);
     }
 
     @Bean
