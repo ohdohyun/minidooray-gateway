@@ -1,11 +1,10 @@
 package com.nhn.sadari.minidooray.gateway.controller;
 
-import com.nhn.sadari.minidooray.gateway.domain.*;
+import com.nhn.sadari.minidooray.gateway.domain.IdDto;
 import com.nhn.sadari.minidooray.gateway.domain.project.*;
 import com.nhn.sadari.minidooray.gateway.service.AccountService;
 import com.nhn.sadari.minidooray.gateway.service.ProjectService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -100,11 +99,9 @@ public class ProjectController {
     }
 
     @PostMapping("/{projectId}/members/{memberId}/modify")
-    public String doProjectMemberModify(@PathVariable Long projectId, @PathVariable Long memberId, @RequestBody ProjectMemberModify projectMemberModify) {
-
+    public String doProjectMemberModify(@PathVariable Long projectId, @PathVariable Long memberId, @ModelAttribute ProjectMemberModify projectMemberModify) {
         projectService.doProjectMemberModify(projectId, memberId, projectMemberModify);
-
-        return "/index";
+        return "redirect:/projects/" + projectId + "/members";
     }
 
 }

@@ -171,10 +171,11 @@ public class ProjectService {
 
     public IdDto doProjectMemberModify(Long projectId, Long memberId, ProjectMemberModify modify) {
         HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
         HttpEntity<ProjectMemberModify> requestEntity = new HttpEntity<>(modify, httpHeaders);
 
-        ResponseEntity<CommonResponse<?>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + projectId + "/members/" + memberId,
+        ResponseEntity<CommonResponse<IdDto>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + projectId + "/members/" + memberId,
                 HttpMethod.PUT,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
@@ -184,6 +185,8 @@ public class ProjectService {
         if (200 != response.getHeader().getResultCode()) {
             throw new NotFoundException(response.getHeader().getResultMessage());
         }
+        IdDto rst = (IdDto) response.getResult().get(0);
+
         return (IdDto) response.getResult().get(0);
 
     }

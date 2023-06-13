@@ -8,7 +8,6 @@ import lombok.Setter;
 
 @Getter
 @AllArgsConstructor
-@Setter
 @NoArgsConstructor
 public class ProjectMemberModify {
     private ProjectMemberRoleType role;

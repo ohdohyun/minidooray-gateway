@@ -1,10 +1,12 @@
 package com.nhn.sadari.minidooray.gateway.config;
 
+import com.nhn.sadari.minidooray.gateway.converter.StringToProjectMemberRoleTypeConverter;
 import com.nhn.sadari.minidooray.gateway.interceptor.LoginInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -29,6 +31,11 @@ public class WebConfiguration implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor)
                 .excludePathPatterns("/login", "/accounts/register", "oauth2/**");
+    }
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverter(new StringToProjectMemberRoleTypeConverter());
     }
 
 
