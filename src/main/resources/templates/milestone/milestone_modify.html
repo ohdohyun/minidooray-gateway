@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>마일스톤 수정 페이지</title>
+</head>
+<body>
+<h2> 마일스톤 수정</h2>
+
+<form th:action="@{/projects/{projectId}/milestones/{milestoneId}/modify}">
+  <input type="text" name="name" th:value="${milestone.name}">
+  <input type="date" th:value="${milestone.startDate}">
+  <input type="date" th:value="${milestone.endDate}">
+  <input type="submit" value="수정">
+</form>
+<a href="/projects/{projectId}/milestones/{milestoneId}/delete">삭제</a>
+</body>
+</html>

@@ -5,6 +5,8 @@
   <title>Task 등록</title>
 </head>
 <body>
+<th:block th:include="/heading/login_info"/><br/>
+
 <h1>업무 등록</h1>
 <form th:action="@{/projects/register}" th:object="${taskRegister}" method="post">
   <label for="title">Task title:</label><br>

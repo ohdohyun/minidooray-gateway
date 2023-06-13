@@ -6,6 +6,8 @@
 </head>
 <body>
 <h1>프로젝트 등록</h1>
+<th:block th:include="/heading/login_info"/><br/>
+
 <form action="#" th:action="@{/projects/register}" th:object="${projectRegisterDto}" method="post">
     <label for="name">Project Name:</label><br>
     <input type="text" id="name" name="name" th:field="*{name}"><br>

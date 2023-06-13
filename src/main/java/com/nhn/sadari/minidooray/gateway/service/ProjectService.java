@@ -188,10 +188,7 @@ public class ProjectService {
         IdDto rst = (IdDto) response.getResult().get(0);
 
         return (IdDto) response.getResult().get(0);
-
     }
-
-
 
 
 }

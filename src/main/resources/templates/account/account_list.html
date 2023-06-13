@@ -5,6 +5,8 @@
     <title>전체 멤버 리스트</title>
 </head>
 <body>
+<th:block th:include="/heading/login_info"/><br/>
+
 <table>
     <tr th:each="account : ${accountList}">
         <td>번호 필요한가?</td>

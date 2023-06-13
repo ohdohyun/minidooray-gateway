@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>태그 목록</title>
+</head>
+<body>
+<table border="1">
+    <h1>태그리스트</h1>
+    <tr th:each="tag, stat : ${tagList}">
+        <td th:text="${tag.name}"></td>
+        <td>
+            <form th:action="@{/projects/{projectId}/tags/{tagId}/modify(projectId=${projectId}, tagId=1)}" method="post">
+                <input type="text" name="name" th:value="${tag.name}">
+                <input type="submit" value="수정">
+            </form>
+        </td>
+        <td><a th:href="@{/projects/{projectId}/tags/1/delete}">삭제</a></td>
+    </tr>
+
+</table>
+
+</body>
+</html>

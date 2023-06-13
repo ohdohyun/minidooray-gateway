@@ -36,4 +36,15 @@ public class MilestoneController {
         return "/index";
     }
 
+    @GetMapping
+    public String getMilestoneList(@PathVariable Long projectId, Model model) {
+        model.addAttribute("milestoneList", milestoneService.getMilestoneList(projectId));
+        return "milestone/milestone_list";
+    }
+
+    @GetMapping("/{milestoneId}/modify")
+    public String getMilestoneModifyForm(@PathVariable Long projectId, @PathVariable Long milestoneId, Model model) {
+        model.addAttribute("milestone", milestoneService.getMilestone(projectId, milestoneId));
+        return "milestone/milestone_modify";
+    }
 }

@@ -18,19 +18,19 @@ public class AccountController {
     @GetMapping("/register")
     public String accountRegister() {
 
-        return "/account/account_register";
+        return "account/account_register";
     }
 
     @PostMapping("/register")
     public String doRegister(@ModelAttribute AccountRegister accountRegister) {
         accountService.registerAccount(accountRegister);
-        return "/index";
+        return "index";
     }
 
     @GetMapping("/delete/{accountId}")
     public String deleteAccount(@PathVariable Long accountId) {
         accountService.deleteAccount(accountId);
-        return "/index";
+        return "index";
     }
 
     @GetMapping("/modify/{accountId}")
@@ -38,13 +38,13 @@ public class AccountController {
         // 계정 정보 불러오기
         model.addAttribute("accountId", accountId);
         model.addAttribute("accountUpdate", accountService.getAccountInfo(accountId));
-        return "/account/account_modify";
+        return "account/account_modify";
     }
 
     @PostMapping("/modify/{accountId}")
     public String doModify(@PathVariable Long accountId, @ModelAttribute AccountInfo accountUpdate) {
         accountService.doAccountUpdate(accountUpdate, accountId);
-        return "/index";
+        return "index";
     }
 
 }

@@ -1,13 +1,25 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>로그인정보</title>
+    <style>
+        div {
+            margin: 30px;
+            border-style: dotted;
+            border-color: darkgray;
+        }
+    </style>
 </head>
 <body>
-<div>
+<div sec:authorize="isAuthenticated()">
     <span>Mini Dooray!! 로고 넣고싶어요!!</span><br/>
     <span><span th:text="${accountRedis.username}"></span>님 어서오세요!</span>
 </div>
+<div sec:authorize="!isAuthenticated()">
+    <span>Mini Dooray!! 로고 넣고싶어요!!</span><br/>
+    <a href="/login">로그인하기</a>
+</div>
+
 </body>
 </html>

@@ -5,6 +5,8 @@
     <title>Title</title>
 </head>
 <body th:object="${commentRegister}">
+<th:block th:include="/heading/login_info"/><br/>
+
 <h1>Tag Register</h1>
 <form action="#" th:action="@{/tasks/{taskId}/comments/register(taskId=${taskId})}" th:object="${commentRegister}" method="post">
     <p>Name: <input type="text" th:field="*{contents}"/></p>

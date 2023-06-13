@@ -5,6 +5,8 @@
     <title>계정 수정</title>
 </head>
 <body>
+<th:block th:include="/heading/login_info"/><br/>
+
 <h3 th:text="${accountUpdate.loginId}"></h3>
 <form th:action="@{/accounts/modify/{accountId}(accountId=${accountId})}" method="post">
 

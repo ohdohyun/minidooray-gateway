@@ -1,6 +1,6 @@
 package com.nhn.sadari.minidooray.gateway.controller;
 
-import com.nhn.sadari.minidooray.gateway.domain.tag.TagRegister;
+import com.nhn.sadari.minidooray.gateway.domain.tag.TagDto;
 import com.nhn.sadari.minidooray.gateway.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -17,20 +17,32 @@ public class TagController {
     @GetMapping("/register")
     public String getTagRegisterForm(@PathVariable Long projectId, Model model) {
         model.addAttribute("projectId", projectId);
-        model.addAttribute("tagRegister", new TagRegister());
+        model.addAttribute("tagRegister", new TagDto());
         return "/tag/tag_register";
     }
 
     @PostMapping("/register")
-    public String doTagRegister(@PathVariable Long projectId, @ModelAttribute("tagRegister") TagRegister tagRegister) {
+    public String doTagRegister(@PathVariable Long projectId, @ModelAttribute("tagRegister") TagDto tagDto) {
 
-        tagService.registerTag(tagRegister, projectId);
+        tagService.registerTag(tagDto, projectId);
         return "/index";
     }
 
     @GetMapping("/{tagId}/delete")
     public String deleteTag(@PathVariable Long projectId, @PathVariable Long tagId) {
         tagService.deleteTag(projectId, tagId);
-        return "/index";
+        return "redirect:/projects/"+projectId+"/tags";
+    }
+
+    @GetMapping
+    public String getTagList(@PathVariable Long projectId, Model model) {
+        model.addAttribute("tagList", tagService.getTagList(projectId));
+        return "tag/tag_list";
+    }
+
+    @PostMapping("/{tagId}/modify")
+    public String modifyTag(@PathVariable Long projectId, @PathVariable Long tagId, @ModelAttribute TagDto tagDto) {
+        tagService.modifyTag(projectId, tagId, tagDto);
+        return "redirect:/projects/"+projectId+"/tags";
     }
 }

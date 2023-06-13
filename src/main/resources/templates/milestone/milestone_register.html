@@ -5,6 +5,8 @@
     <title>Milestone Register</title>
 </head>
 <body>
+<th:block th:include="/heading/login_info"/><br/>
+
 <h2>Milestone Register Form</h2>
 <form action="#" th:action="@{/projects/{projectId}/milestones/register(projectId=${projectId})}" th:object="${milestoneRegister}" method="post">
     <p>Name: <input type="text" th:field="*{name}"/></p>

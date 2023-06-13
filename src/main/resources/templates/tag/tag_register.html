@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-<body th:object="${tagRegister}">
+<th:block th:include="/heading/login_info"/><br/>
+
 <h1>Tag Register</h1>
-<form action="#" th:action="@{/projects/{projectId}/tags/register(projectId=${projectId})}" th:object="${tagRegister}" method="post">
-    <p>Name: <input type="text" th:field="*{name}"/></p>
+<form action="#" th:action="@{/projects/{projectId}/tags/register(projectId=${projectId})}" method="post">
+    <p>Name: <input type="text" name="name"/></p>
     <p><input type="submit" value="Submit"/></p>
 </form>
 </body>

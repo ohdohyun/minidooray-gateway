@@ -5,12 +5,15 @@
     <title>project_member_list</title>
 </head>
 <body>
+<th:block th:include="/heading/login_info"/><br/>
+
 <table border="1">
     <tr th:each="projectMember : ${projectMemberList}">
         <td>멤버 이름</td>
         <td th:text="${projectMember.memberName}">멤버 이름</td>
         <td th:text="${projectMember.pk_memberId}"></td>
         <td th:text="${projectMember.role}">role</td>
+        <td>
             <form th:if="${projectMember.role == '관리자'}" th:action="@{/projects/{projectId}/members/{memberId}/modify(projectId=${projectId}, memberId=${projectMember.pk_memberId})}" method="post">
                 <input name="role" th:value="멤버" hidden="hidden"/>
                 <button type="submit">관리자해제</button>
