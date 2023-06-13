@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>전체 멤버 리스트</title>
+</head>
+<body>
+<table>
+    <tr th:each="account : ${accountList}">
+        <td>번호 필요한가?</td>
+        <td th:text="account.username">이름</td>
+        <td th:text="account.email">이메일</td>
+        <td>
+            <form action="#" th:action="@{/projects/{projectId}/members/register(projectId=${projectId})}" method="post">
+                <p><input type="text" name="memberId" value="${account.accountId}" hidden="hidden"/></p>
+                <p><input type="text" name="memberName" value="${account.username}" hidden="hidden"/></p>
+                <p><input type="text" name="role" hidden="hidden"/></p>
+                <p><input type="submit" value="등록"/></p>
+            </form>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

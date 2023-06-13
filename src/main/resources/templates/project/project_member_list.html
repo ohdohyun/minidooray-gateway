@@ -1,13 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>project_member_list</title>
 </head>
 <body>
-<table>
-    <tr>
-       <td>멤버 아이디</td>
+<table border="1">
+    <tr th:each="projectMember : ${projectMemberList}">
+        <td>멤버 아이디</td>
+        <td th:text="${projectMember.memberName}">멤버 이름</td>
+        <td th:text="${projectMember.pk_memberId}"></td>
+        <td th:text="${projectMember.role}">role</td>
+        <td>
+            <form th:if="${projectMember.role == '관리자'}" th:action="@{/projects/{projectId}/members/{memberId}/modify(projectId=${projectId}, memberId=${projectMember.pk_memberId})}" method="post">
+
+<!--                <input type="hidden" name="role" th:value="멤버" />-->
+                <button type="submit">관리자해제</button>
+            </form>
+            <form th:if="${projectMember.role == '멤버'}" th:action="@{/projects/{projectId}/members/{memberId}/modify(projectId=${projectId}, memberId=${projectMember.pk_memberId})}" method="post">
+<!--                <input type="text" name="role" th:value="${com.nhn.sadari.minidooray.gateway.enumclass.ProjectMemberRoleType.valueOf('관리자')}" />-->
+<!--                <input type="text" name="role"/>-->
+<!--                <span th:value="(com.nhn.sadari.minidooray.gateway.enumclass.ProjectMemberRoleType.valueOf('관리자'))"/><br/><br/>-->
+<!--                <span th:value="${T(com.nhn.sadari.minidooray.gateway.enumclass.ProjectMemberRoleType).관리자.name()}"/>-->
+                <span th:value="${T(com.nhn.sadari.minidooray.gateway.enumclass.ProjectMemberRoleType).관리자}"/>
+                ?as
+                <button type="submit">관리자등록</button>
+            </form>
+
+        </td>
     </tr>
 </table>
 </body>

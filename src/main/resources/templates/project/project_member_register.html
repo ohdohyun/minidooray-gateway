@@ -1,22 +1,23 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
 <head>
-  <title>Member Form</title>
   <meta charset="UTF-8">
+  <title>전체 멤버 리스트</title>
 </head>
 <body>
-<h2>멤버 등록</h2>
-<form action="#" th:action="@{/projects/{projectId}/members/register(projectId=${projectId})}" method="post">
-  <p>Member ID: <input type="text" name="memberId"/></p>
-  <p>Member Name: <input type="text" name="memberName"/></p>
-  <p>Role:
-    <select name="role">
-      <option th:each="role : ${T(com.nhn.sadari.minidooray.gateway.enumclass.ProjectMemberRoleType).values()}"
-              th:value="${role}"
-              th:text="${role}">Role</option>
-    </select>
-  </p>
-  <p><input type="submit" value="Submit"/></p>
-</form>
+<table>
+  <tr th:each="account : ${accountList}">
+    <td>번호 필요한가?</td>
+    <td th:text="${account.name}">이름</td>
+    <td th:text="${account.email}">이메일</td>
+    <td>
+      <form action="#" th:action="@{/projects/{projectId}/members/register(projectId=${projectId})}" method="post">
+        <p><input type="text" name="memberId" th:value="${account.id}" hidden="hidden"/></p>
+        <p><input type="text" name="memberName" th:value="${account.name}" hidden="hidden"/></p>
+        <p><input type="submit" value="등록"/></p>
+      </form>
+    </td>
+  </tr>
+</table>
 </body>
 </html>

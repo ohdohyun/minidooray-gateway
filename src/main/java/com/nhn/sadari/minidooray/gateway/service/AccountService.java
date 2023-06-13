@@ -1,10 +1,7 @@
 package com.nhn.sadari.minidooray.gateway.service;
 
 import com.nhn.sadari.minidooray.gateway.domain.IdDto;
-import com.nhn.sadari.minidooray.gateway.domain.account.AccountRedis;
-import com.nhn.sadari.minidooray.gateway.domain.account.AccountRegister;
-import com.nhn.sadari.minidooray.gateway.domain.account.AccountInfo;
-import com.nhn.sadari.minidooray.gateway.domain.account.LoginRequest;
+import com.nhn.sadari.minidooray.gateway.domain.account.*;
 import com.nhn.sadari.minidooray.gateway.domain.common.CommonResponse;
 import com.nhn.sadari.minidooray.gateway.exception.AlreadyExistsException;
 import com.nhn.sadari.minidooray.gateway.exception.NotFoundException;
@@ -25,6 +22,7 @@ public class AccountService {
     private final RestTemplate restTemplate;
     private final PasswordEncoder passwordEncoder;
 
+    // 회원가입
     public IdDto registerAccount(AccountRegister accountRegister) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
@@ -48,6 +46,8 @@ public class AccountService {
         return (IdDto) response.getResult().get(0);
     }
 
+
+    // 회원탈퇴
     public IdDto deleteAccount(Long accountId) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
@@ -68,7 +68,8 @@ public class AccountService {
         return (IdDto) response.getResult().get(0);
     }
 
-    public AccountInfo getAccountUpdate(Long accountId) {
+    // 회원 정보 정보 요청
+    public AccountInfo getAccountInfo(Long accountId) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
 
@@ -90,6 +91,30 @@ public class AccountService {
         return (AccountInfo) response.getResult().get(0);
     }
 
+    public List<AccountListDto> getAccountList() {
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
+
+        HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
+        ResponseEntity<CommonResponse<AccountListDto>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "7070" + "/api/accounts/group",
+                HttpMethod.GET,
+                requestEntity,
+                new ParameterizedTypeReference<>() {
+                });
+        CommonResponse<?> response = exchange.getBody();
+
+        if (200 != response.getHeader().getResultCode()) {
+            throw new NotFoundException(response.getHeader().getResultMessage());
+        }
+        return (List<AccountListDto>) response.getResult();
+
+
+
+
+    }
+
+    // 회원정보 수정
     public IdDto doAccountUpdate(AccountInfo accountUpdate, Long accountId) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);

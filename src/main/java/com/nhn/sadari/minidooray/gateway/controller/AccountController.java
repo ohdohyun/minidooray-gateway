@@ -37,13 +37,12 @@ public class AccountController {
     public String accountModify(@PathVariable Long accountId, Model model) {
         // 계정 정보 불러오기
         model.addAttribute("accountId", accountId);
-        model.addAttribute("accountUpdate", accountService.getAccountUpdate(accountId));
+        model.addAttribute("accountUpdate", accountService.getAccountInfo(accountId));
         return "/account/account_modify";
     }
 
     @PostMapping("/modify/{accountId}")
     public String doModify(@PathVariable Long accountId, @ModelAttribute AccountInfo accountUpdate) {
-        AccountInfo accountUpdate1 = accountUpdate;
         accountService.doAccountUpdate(accountUpdate, accountId);
         return "/index";
     }

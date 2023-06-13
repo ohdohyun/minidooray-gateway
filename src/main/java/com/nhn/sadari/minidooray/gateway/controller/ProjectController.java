@@ -1,12 +1,11 @@
 package com.nhn.sadari.minidooray.gateway.controller;
 
 import com.nhn.sadari.minidooray.gateway.domain.*;
-import com.nhn.sadari.minidooray.gateway.domain.project.ProjectGet;
-import com.nhn.sadari.minidooray.gateway.domain.project.ProjectMemberRegister;
-import com.nhn.sadari.minidooray.gateway.domain.project.ProjectModifyDto;
-import com.nhn.sadari.minidooray.gateway.domain.project.ProjectRegisterDto;
+import com.nhn.sadari.minidooray.gateway.domain.project.*;
+import com.nhn.sadari.minidooray.gateway.service.AccountService;
 import com.nhn.sadari.minidooray.gateway.service.ProjectService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProjectController {
 
     private final ProjectService projectService;
+    private final AccountService accountService;
 
 
     // 등록 #TODO 리턴할 때 projects로 가는걸 projects/{memberId} 로 가게 하기
@@ -73,6 +73,8 @@ public class ProjectController {
     public String getProjectMemberRegisterForm(@PathVariable Long projectId, Model model) {
 
         model.addAttribute("projectId", projectId);
+        model.addAttribute("accountList", accountService.getAccountList());
+
         return "project/project_member_register";
     }
 
@@ -86,6 +88,21 @@ public class ProjectController {
     @GetMapping("/{projectId}/members/{memberId}/delete")
     public String deleteProjectMemberByMemberId(@PathVariable Long projectId, @PathVariable Long memberId) {
         projectService.deleteProjectMemberByMemberId(projectId, memberId);
+
+        return "/index";
+    }
+
+    @GetMapping("/{projectId}/members")
+    public String getProjectMembers(@PathVariable Long projectId, Model model) {
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("projectMemberList", projectService.getProjectMembersByProjectId(projectId));
+        return "project/project_member_list";
+    }
+
+    @PostMapping("/{projectId}/members/{memberId}/modify")
+    public String doProjectMemberModify(@PathVariable Long projectId, @PathVariable Long memberId, @RequestBody ProjectMemberModify projectMemberModify) {
+
+        projectService.doProjectMemberModify(projectId, memberId, projectMemberModify);
 
         return "/index";
     }

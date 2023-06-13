@@ -50,21 +50,12 @@ public class GitLoginSuccessHandler extends SavedRequestAwareAuthenticationSucce
             throw new GitEmailNotFountException("이메일이 없습니다");
         }
 
-        // accountService 깃 이메일이 이미 있는지 체크, 있으면 가져와버리기, 없으면 넣어달라 요청해야지
-        // 예외 ) 없는 유저라면 accountApi 에 새로 등록하기
-
-        // 로그인 이메일 체크
-        // 없으면? 값을 등록해달라 요청
-        // 있으면? 그냥 로그인 해야지..
-        // 근데 요청해서 받는게? id로 받아오는게 달라
-
-
         OAuth2User userDetails = (OAuth2User) authentication.getPrincipal();
 
         AccountRedis accountRedis = accountService.getAccountRedis(email);
 
         Long createdId = null;
-        // TODO 고쳐라.
+        // #TODO 고쳐라.
         if (null == accountRedis.getAccountId()) {
 
             AccountRegister accountRegister = new AccountRegister(
@@ -78,7 +69,7 @@ public class GitLoginSuccessHandler extends SavedRequestAwareAuthenticationSucce
             );
             createdId = accountService.registerAccount(accountRegister).getId();
 
-            AccountInfo returnedAccount = accountService.getAccountUpdate(createdId);
+            AccountInfo returnedAccount = accountService.getAccountInfo(createdId);
             accountRedis.setAccountId(createdId);
             accountRedis.setLoginId(returnedAccount.getLoginId());
             accountRedis.setUsername(returnedAccount.getName());

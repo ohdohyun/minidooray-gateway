@@ -83,7 +83,7 @@ public class ProjectService {
     public IdDto delete(Long projectId) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
-        HttpEntity<String> requestEntity = new HttpEntity<>(httpHeaders);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
 
         ResponseEntity<CommonResponse<IdDto>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + projectId,
                 HttpMethod.DELETE,
@@ -101,7 +101,7 @@ public class ProjectService {
     public List<ProjectListGet> getProjectsByMemberId(Long memberId) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
-        HttpEntity<String> requestEntity = new HttpEntity<>(httpHeaders);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
 
         ResponseEntity<CommonResponse<?>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/members/" + memberId,
                 HttpMethod.GET,
@@ -135,7 +135,7 @@ public class ProjectService {
     public IdDto deleteProjectMemberByMemberId(Long projectId, Long memberId) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
-        HttpEntity<String> requestEntity = new HttpEntity<>(httpHeaders);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
 
         ResponseEntity<CommonResponse<IdDto>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + projectId + "/members/" + memberId,
                 HttpMethod.DELETE,
@@ -149,6 +149,46 @@ public class ProjectService {
         }
         return (IdDto) response.getResult().get(0);
     }
+
+    public List<ProjectMemberListDto> getProjectMembersByProjectId(Long projectId) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
+        HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
+
+        ResponseEntity<CommonResponse<?>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + projectId + "/members",
+                HttpMethod.GET,
+                requestEntity,
+                new ParameterizedTypeReference<>() {
+                });
+        CommonResponse<?> response = exchange.getBody();
+
+        if (200 != response.getHeader().getResultCode()) {
+            throw new NotFoundException(response.getHeader().getResultMessage());
+        }
+        return (List<ProjectMemberListDto>) response.getResult();
+
+    }
+
+    public IdDto doProjectMemberModify(Long projectId, Long memberId, ProjectMemberModify modify) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
+        HttpEntity<ProjectMemberModify> requestEntity = new HttpEntity<>(modify, httpHeaders);
+
+        ResponseEntity<CommonResponse<?>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + projectId + "/members/" + memberId,
+                HttpMethod.PUT,
+                requestEntity,
+                new ParameterizedTypeReference<>() {
+                });
+        CommonResponse<?> response = exchange.getBody();
+
+        if (200 != response.getHeader().getResultCode()) {
+            throw new NotFoundException(response.getHeader().getResultMessage());
+        }
+        return (IdDto) response.getResult().get(0);
+
+    }
+
+
 
 
 }
