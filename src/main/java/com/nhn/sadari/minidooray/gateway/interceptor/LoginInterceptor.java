@@ -21,7 +21,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Cookie cookie = CookieUtils.getSessionCookie("sessionId", request.getCookies());
 
-        AccountRedis accountRedis = (AccountRedis)(redisTemplate.opsForValue().get(cookie.getValue()));
+            AccountRedis accountRedis = (AccountRedis)(redisTemplate.opsForValue().get(cookie.getValue()));
         request.setAttribute("accountRedis", accountRedis);
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }

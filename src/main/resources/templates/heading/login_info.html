@@ -4,20 +4,36 @@
     <meta charset="UTF-8">
     <title>로그인정보</title>
     <style>
-        div {
+        .loginInfo {
+            background-color: #98FB98; /* 연두색 배경 */
+            font-family: Arial, sans-serif; /* 글씨체 */
+            font-size: 50px;
+            color: gray;
             margin: 30px;
-            border-style: dotted;
-            border-color: darkgray;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+            text-align: left; /* 글자 중앙 정렬 */
+        }
+        .username {
+            color: blue; /* 사용자 이름 색상 */
+        }
+        .loginInfo a {
+            color: #333; /* 링크 색상 */
+            text-decoration: none; /* 밑줄 제거 */
+        }
+        .loginInfo a:hover {
+            color: #555; /* 마우스 오버시 색상 */
         }
     </style>
 </head>
 <body>
-<div sec:authorize="isAuthenticated()">
-    <span>Mini Dooray!! 로고 넣고싶어요!!</span><br/>
-    <span><span th:text="${accountRedis.username}"></span>님 어서오세요!</span>
+<div class="loginInfo" sec:authorize="isAuthenticated()">
+    Mini Dooray!!
+    <span class="username" th:text="${accountRedis.username}"></span>님 어서오세요!
 </div>
-<div sec:authorize="!isAuthenticated()">
-    <span>Mini Dooray!! 로고 넣고싶어요!!</span><br/>
+<div class="loginInfo" sec:authorize="!isAuthenticated()">
+    Mini Dooray!!
     <a href="/login">로그인하기</a>
 </div>
 

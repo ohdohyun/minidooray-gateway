@@ -73,12 +73,12 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationSuccessHandler gitLoginSuccessHandler(RedisTemplate redisTemplate, OAuth2AuthorizedClientService authorizedClientService, GitService gitService, AccountService accountService) {
+    public AuthenticationSuccessHandler gitLoginSuccessHandler(RedisTemplate<String,Object> redisTemplate, OAuth2AuthorizedClientService authorizedClientService, GitService gitService, AccountService accountService) {
         return new GitLoginSuccessHandler(redisTemplate, authorizedClientService, gitService, accountService);
     }
 
     @Bean
-    public AuthenticationSuccessHandler customLoginSuccessHandler(RedisTemplate redisTemplate, AccountService accountService) {
+    public AuthenticationSuccessHandler customLoginSuccessHandler(RedisTemplate<String,Object> redisTemplate, AccountService accountService) {
         return new CustomLoginSuccessHandler(redisTemplate, accountService);
     }
 
