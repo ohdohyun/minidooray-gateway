@@ -97,7 +97,7 @@ public class AccountService {
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
 
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
-        ResponseEntity<CommonResponse<AccountListDto>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "7070" + "/api/accounts/group",
+        ResponseEntity<CommonResponse<AccountListDto>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "7070" + "/api/accounts",
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
@@ -108,10 +108,6 @@ public class AccountService {
             throw new NotFoundException(response.getHeader().getResultMessage());
         }
         return (List<AccountListDto>) response.getResult();
-
-
-
-
     }
 
     // 회원정보 수정
@@ -121,7 +117,7 @@ public class AccountService {
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
 
         HttpEntity<AccountInfo> requestEntity = new HttpEntity<>(accountUpdate, httpHeaders);
-        ResponseEntity<CommonResponse<IdDto>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "7070" + "/api/accounts/modify/" + accountId,
+        ResponseEntity<CommonResponse<IdDto>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "7070" + "/api/accounts/" + accountId,
                 HttpMethod.PUT,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
