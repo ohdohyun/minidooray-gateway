@@ -13,10 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 @ControllerAdvice
 public class LoginAdvice {
-//    @InitBinder
-//    public void initBinder(WebDataBinder binder) {
-//        binder.initDirectFieldAccess();
-//    }
+
 
     @ExceptionHandler(value = {GitEmailNotFountException.class})
     public ModelAndView gitEmailNotFoundException(HttpServletRequest req, Exception e) {
