@@ -1,6 +1,6 @@
 package com.nhn.sadari.minidooray.gateway.service;
 
-import com.nhn.sadari.minidooray.gateway.domain.IdDto;
+import com.nhn.sadari.minidooray.gateway.domain.common.IdDto;
 import com.nhn.sadari.minidooray.gateway.domain.comment.CommentRegister;
 import com.nhn.sadari.minidooray.gateway.domain.common.CommonResponse;
 import com.nhn.sadari.minidooray.gateway.exception.AlreadyExistsException;

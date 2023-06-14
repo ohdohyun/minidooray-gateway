@@ -55,15 +55,14 @@ public class GitLoginSuccessHandler extends SavedRequestAwareAuthenticationSucce
         AccountRedis accountRedis = accountService.getAccountRedis(email);
 
         Long createdId = null;
-        // #TODO 고쳐라.
         if (null == accountRedis.getAccountId()) {
 
             AccountRegister accountRegister = new AccountRegister(
                     //아이디 패스워드 이메일 이름
                     email, //asdfasef@git.com
                     "team_sadari_never_gives_up",
-//                    userDetails.getAttribute("email"), //ohdo@kakao.com
-                    "ohdo@kakao.com",
+                    userDetails.getAttribute("email"), //ohdo@kakao.com
+//                    "ohdo@kakao.com",
                     userDetails.getAttribute("name")
 
             );

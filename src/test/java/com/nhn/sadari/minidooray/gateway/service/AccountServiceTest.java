@@ -1,13 +1,14 @@
 package com.nhn.sadari.minidooray.gateway.service;
 
-import com.nhn.sadari.minidooray.gateway.domain.IdDto;
 import com.nhn.sadari.minidooray.gateway.domain.account.*;
 import com.nhn.sadari.minidooray.gateway.domain.common.CommonResponse;
+import com.nhn.sadari.minidooray.gateway.domain.common.IdDto;
 import com.nhn.sadari.minidooray.gateway.enumclass.MemberStatusType;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -21,9 +22,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 
+@ExtendWith(MockitoExtension.class)
 class AccountServiceTest {
 
     @Mock
@@ -32,11 +33,6 @@ class AccountServiceTest {
     private PasswordEncoder passwordEncoder;
     @InjectMocks
     private AccountService accountService;
-
-    @BeforeEach
-    public void setUp() {
-        initMocks(this);
-    }
 
     @Test
     void registerAccount() {

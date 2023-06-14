@@ -1,20 +1,24 @@
 package com.nhn.sadari.minidooray.gateway.service;
 
-import com.nhn.sadari.minidooray.gateway.domain.IdDto;
 import com.nhn.sadari.minidooray.gateway.domain.account.*;
 import com.nhn.sadari.minidooray.gateway.domain.common.CommonResponse;
+import com.nhn.sadari.minidooray.gateway.domain.common.IdDto;
 import com.nhn.sadari.minidooray.gateway.exception.AlreadyExistsException;
+import com.nhn.sadari.minidooray.gateway.exception.GitEmailNotFountException;
 import com.nhn.sadari.minidooray.gateway.exception.NotFoundException;
 import com.nhn.sadari.minidooray.gateway.exception.UserUpdateFailException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AccountService {
@@ -124,8 +128,9 @@ public class AccountService {
                 });
         CommonResponse<?> response = exchange.getBody();
 
+
         if (200 != response.getHeader().getResultCode()) {
-            throw new UserUpdateFailException(response.getHeader().getResultMessage());
+            throw new GitEmailNotFountException(response.getHeader().getResultMessage());
         }
         return (IdDto) response.getResult().get(0);
     }
@@ -143,7 +148,7 @@ public class AccountService {
 
 
         // 여기도 예외처리.
-        CommonResponse<?> response = exchange.getBody();
+        CommonResponse<AccountRedis> response = exchange.getBody();
 
         if (404 == response.getHeader().getResultCode()) {
             return new AccountRedis();
@@ -167,8 +172,9 @@ public class AccountService {
         CommonResponse<?> response = exchange.getBody();
 
         if (200 != response.getHeader().getResultCode()) {
-            throw new NotFoundException(response.getHeader().getResultMessage());
+            throw new GitEmailNotFountException(response.getHeader().getResultMessage());
         }
+
         return (LoginRequest) response.getResult().get(0);
     }
 

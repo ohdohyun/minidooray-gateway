@@ -1,6 +1,6 @@
 package com.nhn.sadari.minidooray.gateway.service;
 
-import com.nhn.sadari.minidooray.gateway.domain.IdDto;
+import com.nhn.sadari.minidooray.gateway.domain.common.IdDto;
 import com.nhn.sadari.minidooray.gateway.domain.common.CommonResponse;
 import com.nhn.sadari.minidooray.gateway.domain.milestone.MilestoneDto;
 import com.nhn.sadari.minidooray.gateway.domain.milestone.MilestoneRegister;
@@ -59,22 +59,22 @@ public class MilestoneService {
         return (IdDto) response.getResult().get(0);
     }
 
-    public List<MilestoneRegister> getMilestoneList(Long projectId) {
+    public List<MilestoneDto> getMilestoneList(Long projectId) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
 
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
-        ResponseEntity<CommonResponse<?>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + projectId + "/milestones",
+        ResponseEntity<CommonResponse<MilestoneDto>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + projectId + "/milestones",
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
                 });
-        CommonResponse<?> response = exchange.getBody();
+        CommonResponse<MilestoneDto> response = exchange.getBody();
 
         if (200 != response.getHeader().getResultCode()) {
             throw new NotFoundException(response.getHeader().getResultMessage());
         }
-        return (List<MilestoneRegister>) response.getResult();
+        return (List<MilestoneDto>) response.getResult();
     }
 
     public IdDto doMilestoneModify(Long projectId, Long milestoneId, MilestoneDto milestoneDto) {
@@ -92,7 +92,7 @@ public class MilestoneService {
         if (200 != response.getHeader().getResultCode()) {
             throw new NotFoundException(response.getHeader().getResultMessage());
         }
-        return (IdDto) response.getResult();
+        return (IdDto) (response.getResult().get(0));
     }
 
 

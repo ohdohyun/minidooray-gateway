@@ -1,6 +1,7 @@
 package com.nhn.sadari.minidooray.gateway.auth;
 
 import com.nhn.sadari.minidooray.gateway.domain.account.LoginRequest;
+import com.nhn.sadari.minidooray.gateway.exception.GitEmailNotFountException;
 import com.nhn.sadari.minidooray.gateway.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,7 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         LoginRequest info = accountService.getLoginInfo(username);
 
         if (info == null) {
-            throw new UsernameNotFoundException("UsernameNotFoundException");
+            throw new GitEmailNotFountException("UsernameNotFoundException");
         }
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("user");
         return new User(info.getLoginId(), info.getPassword(),

@@ -1,6 +1,6 @@
 package com.nhn.sadari.minidooray.gateway.controller;
 
-import com.nhn.sadari.minidooray.gateway.domain.IdDto;
+import com.nhn.sadari.minidooray.gateway.domain.common.IdDto;
 import com.nhn.sadari.minidooray.gateway.domain.project.*;
 import com.nhn.sadari.minidooray.gateway.service.AccountService;
 import com.nhn.sadari.minidooray.gateway.service.ProjectService;

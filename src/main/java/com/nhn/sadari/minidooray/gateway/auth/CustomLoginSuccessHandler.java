@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
@@ -30,10 +29,6 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
         // AccountRedis 바꾸기
         AccountRedis accountRedis = accountService.getAccountRedis(authentication.getName());
-        // 계정이 없으면 다시 로그인 페이지로 보내기
-        if (Objects.isNull(accountRedis)) {
-            response.sendRedirect("/login");
-        }
 
         // 쿠키 브라우저에 저장
         response.addCookie(new Cookie("sessionId", session.getId()));

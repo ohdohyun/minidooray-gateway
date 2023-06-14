@@ -1,5 +1,6 @@
 package com.nhn.sadari.minidooray.gateway.config;
 
+import com.nhn.sadari.minidooray.gateway.auth.CustomAuthenticationFailureHandler;
 import com.nhn.sadari.minidooray.gateway.auth.CustomLoginSuccessHandler;
 import com.nhn.sadari.minidooray.gateway.auth.CustomUserDetailsService;
 import com.nhn.sadari.minidooray.gateway.auth.GitLoginSuccessHandler;
@@ -34,14 +35,15 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeRequests()
-                .antMatchers("/login", "/members/**", "/index").permitAll()
+                .antMatchers("/login", "/accounts/**", "/index").permitAll()
                 .antMatchers("/test").authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .loginProcessingUrl("/normal-login")
+                .loginProcessingUrl("/login")
                 .usernameParameter("loginId")
                 .passwordParameter("password")
+                .failureHandler(new CustomAuthenticationFailureHandler())
                 .successHandler(customLoginSuccessHandler(null, null))
                 .and()
                 .oauth2Login()
@@ -53,7 +55,7 @@ public class SecurityConfig {
                 .and()
                 .logout()
                 .logoutUrl("/logout")
-                .deleteCookies("JSESSIONID")
+                .deleteCookies("sessionId")
                 .and()
                 .build();
     }

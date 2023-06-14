@@ -13,9 +13,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class MilestoneRegister {
 
-    String name;
+    private Long id;
+    private String name;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    LocalDate startDate;
+    private LocalDate startDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    LocalDate endDate;
+    private LocalDate endDate;
 }
