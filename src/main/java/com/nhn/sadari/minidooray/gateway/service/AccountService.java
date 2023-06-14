@@ -22,13 +22,14 @@ public class AccountService {
     private final RestTemplate restTemplate;
     private final PasswordEncoder passwordEncoder;
 
+
     // 회원가입
     public IdDto registerAccount(AccountRegister accountRegister) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
 
-        accountRegister.setPassword(passwordEncoder.encode(accountRegister.getPassword()));
+        accountRegister.encodePassword(passwordEncoder.encode(accountRegister.getPassword()));
 
         HttpEntity<AccountRegister> requestEntity = new HttpEntity<>(accountRegister, httpHeaders);
         ResponseEntity<CommonResponse<IdDto>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "7070" + "/api/accounts",
@@ -72,7 +73,6 @@ public class AccountService {
     public AccountInfo getAccountInfo(Long accountId) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
-
 
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
         ResponseEntity<CommonResponse<AccountInfo>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "7070" + "/api/accounts/" + accountId,

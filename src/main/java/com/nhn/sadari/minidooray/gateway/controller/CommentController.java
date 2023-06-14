@@ -25,7 +25,7 @@ public class CommentController {
     public String doCommentRegister(@PathVariable Long taskId, @ModelAttribute("taskRegister") CommentRegister commentRegister) {
 
         // #TODO 로그인 구현 이후 id 받아와서 수정
-        commentRegister.setWriterId(1L);
+//        commentRegister.setWriterId(1L);
         commentService.registerComment(commentRegister, taskId);
         return "/index";
     }

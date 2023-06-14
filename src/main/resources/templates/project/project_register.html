@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
 </head>
 <body>
-<h1>프로젝트 등록</h1>
 <th:block th:include="/heading/login_info"/><br/>
+<h1>프로젝트 등록</h1>
 
 <form action="#" th:action="@{/projects/register}" th:object="${projectRegisterDto}" method="post">
     <label for="name">Project Name:</label><br>
@@ -16,7 +16,6 @@
     <textarea id="description" name="description" th:field="*{description}"></textarea><br>
     <input type="hidden" th:value="${accountRedis.accountId}" name="memberId" />
     <input type="hidden" th:value="${accountRedis.username}" name="memberName" />
-
 
     <input type="submit" value="Submit">
 </form>

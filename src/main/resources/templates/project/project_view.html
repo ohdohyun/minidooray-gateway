@@ -3,38 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <title>MiniDooray - 프로젝트</title>
-    <style>
-        div {
-            padding: 20px;
-            border-style: dotted;
-            border-color: forestgreen;
-        }
-        span{
-            padding: 20px;
-        }
-    </style>
 </head>
 <body>
 <th:block th:include="/heading/login_info"/><br/>
 
-<th:block th:include="heading/project_info" />
 <h2>업무 리스트</h2>
 <table>
-    <tr>
-        <td>번호</td>
-        <td>제목</td>
-        <td>담당자</td>
-        <td>태그</td>
-    </tr>
-    <tr th:each="task, stat : ${tasks}">
-        <td th:text="|${stat.count}|"></td>
-        <td th:text="${task.title}"></td>
-        <td th:text="${task.memberName}"></td>
-        <td th:text="${task.tags}"></td>
+<!--    <tr>-->
+<!--        <td>번호</td>-->
+<!--        <td>제목</td>-->
+<!--        <td>담당자</td>-->
+<!--        <td>태그</td>-->
+<!--    </tr>-->
+<!--    <tr th:each="task, stat : ${tasks}">-->
+<!--        <td th:text="|${stat.count}|"></td>-->
+<!--        <td th:text="${task.title}"></td>-->
+<!--        <td th:text="${task.memberName}"></td>-->
+<!--        <td th:text="${task.tags}"></td>-->
+<!--    </tr>-->
+</table>
+<h2>멤버 리스트</h2>
+<table border="1">
+    <tr th:each="projectMember : ${projectMemberList}">
+        <td>멤버 이름</td>
+        <td th:text="${projectMember.memberName}">멤버 이름</td>
+        <td th:text="${projectMember.pk_memberId}"></td>
+        <td th:text="${projectMember.role}">role</td>
     </tr>
 </table>
-<a th:href="@{/projects/{id}/members(id=${project.id})}">멤버 리스트</a>
-<a th:href="@{/projects/{id}/tags(id=${project.id})}">태그 리스트</a>
-<a th:href="@{/projects/{id}/milestones(id=${project.id})}">마일스톤 리스트</a>
+<h2>태그 리스트</h2>
+<table border="1">
+    <h1>태그리스트</h1>
+    <tr th:each="tag, stat : ${tagList}">
+        <td th:text="${tag.name}"></td>
+        <td>
+            <form th:action="@{/projects/{projectId}/tags/{tagId}/modify(projectId=${projectId}, tagId=1)}" method="post">
+                <input type="text" name="name" th:value="${tag.name}">
+                <input type="submit" value="수정">
+            </form>
+        </td>
+        <td><a th:href="@{/projects/{projectId}/tags/1/delete}">삭제</a></td>
+    </tr>
+</table>
+<h2>마일스톤 리스트</h2>
+<table border="1">
+    //여기 milestone id로 바꾸기
+    <tr th:each="milestone : ${milestoneList}">
+        <td th:text="${milestone.name}">이름</td>
+        <td th:text="${milestone.startDate}">시작일</td>
+        <td th:text="${milestone.endDate}">종료일</td>
+    </tr>
+</table>
 </body>
 </html>

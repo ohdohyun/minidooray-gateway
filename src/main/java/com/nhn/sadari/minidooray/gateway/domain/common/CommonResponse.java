@@ -1,18 +1,20 @@
 package com.nhn.sadari.minidooray.gateway.domain.common;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
-@Data
-@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
 public class CommonResponse<T> {
     private Header header;
     private List<T> result;
     private int totalCount;
 
-    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
     @Builder
     public static class Header {
         private boolean isSuccessful;

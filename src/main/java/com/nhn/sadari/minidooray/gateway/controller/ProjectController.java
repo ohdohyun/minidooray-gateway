@@ -17,8 +17,6 @@ public class ProjectController {
     private final ProjectService projectService;
     private final AccountService accountService;
 
-
-    // 등록 #TODO 리턴할 때 projects로 가는걸 projects/{memberId} 로 가게 하기
     @GetMapping("/register")
     public String getRegisterForm(Model model) {
         model.addAttribute("projectRegisterDto", new ProjectRegisterDto());
@@ -36,13 +34,9 @@ public class ProjectController {
     public String getModifyForm(@PathVariable Long projectId, Model model) {
 
         ProjectGet get = projectService.findByProjectId(projectId);
-        ProjectModifyDto projectModifyDto = new ProjectModifyDto();
-        projectModifyDto.setName(get.getName());
-        projectModifyDto.setDescription(get.getDescription());
-        projectModifyDto.setStatus(get.getProjectStatus_status());
 
         model.addAttribute("projectId", projectId);
-        model.addAttribute("projectModifyDto", projectModifyDto);
+        model.addAttribute("projectModifyDto", new ProjectModifyDto(get.getName(), get.getDescription(), get.getProjectStatus_status()));
         return "project/project_modify";
     }
 
@@ -94,7 +88,7 @@ public class ProjectController {
     @GetMapping("/{projectId}/members")
     public String getProjectMembers(@PathVariable Long projectId, Model model) {
         model.addAttribute("projectId", projectId);
-        model.addAttribute("projectMemberList", projectService.getProjectMembersByProjectId(projectId));
+        model.addAttribute("projectMemberList", projectService.getProjectMemberListByProjectId(projectId));
         return "project/project_member_list";
     }
 
@@ -103,5 +97,6 @@ public class ProjectController {
         projectService.doProjectMemberModify(projectId, memberId, projectMemberModify);
         return "redirect:/projects/" + projectId + "/members";
     }
+
 
 }

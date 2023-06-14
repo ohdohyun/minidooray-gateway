@@ -5,8 +5,8 @@
   <meta charset="UTF-8">
 </head>
 <body>
-<h1>프로젝트 수정</h1>
 <th:block th:include="/heading/login_info"/><br/>
+<h1>프로젝트 수정</h1>
 
 <form th:action="@{/projects/{projectId}/modify(projectId=${projectId})}" method="POST">
   <label for="name">프로젝트 이름:</label><br>

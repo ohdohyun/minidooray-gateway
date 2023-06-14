@@ -2,11 +2,13 @@ package com.nhn.sadari.minidooray.gateway.domain.project;
 
 
 import com.nhn.sadari.minidooray.gateway.enumclass.ProjectStatusType;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProjectModifyDto {
     private String name;
     private String description;

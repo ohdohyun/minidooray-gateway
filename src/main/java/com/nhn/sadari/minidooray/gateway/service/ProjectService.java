@@ -150,7 +150,7 @@ public class ProjectService {
         return (IdDto) response.getResult().get(0);
     }
 
-    public List<ProjectMemberListDto> getProjectMembersByProjectId(Long projectId) {
+    public List<ProjectMemberListDto> getProjectMemberListByProjectId(Long projectId) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);

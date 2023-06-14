@@ -19,5 +19,4 @@ public class AccountRedis implements Serializable {
     String loginId;
     String username;
     MemberStatusType status;
-//    String authorities;
 }

@@ -4,11 +4,9 @@ import com.nhn.sadari.minidooray.gateway.domain.account.AccountInfo;
 import com.nhn.sadari.minidooray.gateway.domain.account.AccountRedis;
 import com.nhn.sadari.minidooray.gateway.domain.account.AccountRegister;
 import com.nhn.sadari.minidooray.gateway.enumclass.MemberStatusType;
-import com.nhn.sadari.minidooray.gateway.interceptor.LoginInterceptor;
 import com.nhn.sadari.minidooray.gateway.service.AccountService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -23,7 +21,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(value = AccountController.class)
