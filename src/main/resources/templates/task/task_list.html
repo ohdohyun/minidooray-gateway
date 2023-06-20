@@ -6,17 +6,32 @@
 </head>
 <body>
 <th:block th:include="/heading/login_info"/><br/>
-
 <table>
     <tr>
-        <th>태그이름</th>
-        <th>수정</th>
-        <th>삭제</th>
+        <td>제목</td>
+        <td>내용</td>
+        <td>생성일</td>
+        <td>종료일</td>
+        <td>작성자 이름</td>
+        <td>멤버</td>
+        <td>마일스톤</td>
+        <td>태그</td>
     </tr>
-    <tr th:each="">
-        <td>태그1</td>
-        <td><a th:href="@{/projects/{id}/tags/{tagsId}/update}">수정</a></td>
-        <td><a th:href="@{/projects/{id}/tags/{tagsId}/delete}">삭제</a></td>
+    <tr th:each="task : ${taskList}">
+        <td th:text="${task.title}"></td>
+        <td th:text="${task.content}"></td>
+        <td th:text="${task.createdAt}"></td>
+        <td th:text="${task.endDate}"></td>
+        <td th:text="${task.writerName}"></td>
+        <td th:each="member : ${task.memberNames}">
+            <span th:text="${member}"></span>
+        </td>
+        <td th:each="milestone : ${task.memberNames}">
+            <span th:text="${milestone}"></span>
+        </td>
+        <td th:each="tag : ${task.tagNames}">
+            <span th:text="${tag}"></span>
+        </td>
     </tr>
 </table>
 </body>

@@ -2,11 +2,9 @@ package com.nhn.sadari.minidooray.gateway.domain.account;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @Getter
-@NoArgsConstructor
 public class AccountRegister {
 
     private String loginId;
@@ -17,4 +15,6 @@ public class AccountRegister {
     public void encodePassword(String encodedValue) {
         this.password = encodedValue;
     }
+
+
 }

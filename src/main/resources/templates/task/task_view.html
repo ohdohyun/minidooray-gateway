@@ -15,18 +15,33 @@
 <body>
 <th:block th:include="/heading/login_info"/><br/>
 
-<div>편집 & 삭제 버튼</div>
-<div>프로젝트명 & 업무 명 & 태그들</div>
-<div>등록자 & 담당자 & 만기일 & 마일스톤</div>
-<div>프로젝트 내용</div>
-<div>
-  <form>
-    <input type="text">
-    <input type="submit" value="저장">
-  </form>
-</div>
-<form>
+<table border="1">
+    <tr>
+        <td>제목</td>
+        <td>내용</td>
+        <td>생성일</td>
+        <td>종료일</td>
+        <td>작성자 이름</td>
+        <td>마일스톤</td>
+        <td>멤버</td>
+        <td>태그</td>
+    </tr>
+    <tr>
+        <td th:text="${task.title}"></td>
+        <td th:text="${task.content}"></td>
+        <td th:text="${task.createdAt}"></td>
+        <td th:text="${task.endDate}"></td>
+        <td th:text="${task.writerName}"></td>
+        <td th:text="${task.milestoneId}">
+        <td>
+            <span th:each="member : ${task.memberNames}" th:text="${member}"></span>
+        </td>
+        </td>
+        <td>
+            <span th:each="tag : ${task.tagNames}" th:text="${tag}"></span>
+        </td>
+    </tr>
+</table>
 
-</form>
 </body>
 </html>

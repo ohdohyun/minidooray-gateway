@@ -1,7 +1,7 @@
 package com.nhn.sadari.minidooray.gateway.controller;
 
-import com.nhn.sadari.minidooray.gateway.domain.account.AccountRegister;
 import com.nhn.sadari.minidooray.gateway.domain.account.AccountInfo;
+import com.nhn.sadari.minidooray.gateway.domain.account.AccountRegister;
 import com.nhn.sadari.minidooray.gateway.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -22,8 +22,10 @@ public class AccountController {
     }
 
     @PostMapping("/register")
-    public String doRegister(@ModelAttribute AccountRegister accountRegister) {
-        accountService.registerAccount(accountRegister);
+    public String doRegister(@ModelAttribute AccountRegister accountRegister,Model model) {
+//        IdDto idDto = accountService.registerAccount(accountRegister);
+
+//        model.addAttribute("id", idDto);
         return "index";
     }
 

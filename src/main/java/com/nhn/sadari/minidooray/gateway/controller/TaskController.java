@@ -33,4 +33,17 @@ public class TaskController {
         taskService.deleteTask(projectId, taskId);
         return "/index";
     }
+
+    @GetMapping
+    public String getTaskListByProjectId(@PathVariable Long projectId, Model model) {
+        model.addAttribute("taskList", taskService.getTaskList(projectId));
+        return "task/task_list";
+    }
+
+    @GetMapping("/{taskId}")
+    public String getTask(@PathVariable Long projectId, @PathVariable Long taskId, Model model) {
+        model.addAttribute("task", taskService.getTask(projectId, taskId));
+        return "task/task_view";
+    }
+
 }

@@ -41,8 +41,6 @@ public class SecurityConfig {
                 .formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
-                .usernameParameter("loginId")
-                .passwordParameter("password")
                 .failureHandler(new CustomAuthenticationFailureHandler())
                 .successHandler(customLoginSuccessHandler(null, null))
                 .and()
@@ -99,7 +97,6 @@ public class SecurityConfig {
                 .userNameAttributeName("name")
                 .clientId("da88f02bee356fe1a736")
                 .clientSecret("9973b9769ef2a463e0fc4fd83af4ca00e23d67e7")
-                .scope("user:email")
                 .redirectUri("{baseUrl}/login/oauth2/code/github")
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .build();

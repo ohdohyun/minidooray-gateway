@@ -2,6 +2,8 @@ package com.nhn.sadari.minidooray.gateway.service;
 
 import com.nhn.sadari.minidooray.gateway.domain.common.IdDto;
 import com.nhn.sadari.minidooray.gateway.domain.common.CommonResponse;
+import com.nhn.sadari.minidooray.gateway.domain.project.ProjectGet;
+import com.nhn.sadari.minidooray.gateway.domain.task.TaskDto;
 import com.nhn.sadari.minidooray.gateway.domain.task.TaskRegister;
 import com.nhn.sadari.minidooray.gateway.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -49,5 +51,41 @@ public class TaskService {
             throw new NotFoundException(response.getHeader().getResultMessage());
         }
         return (IdDto) response.getResult().get(0);
+    }
+
+    public TaskDto getTask(Long projectId, Long taskId) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
+
+        HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
+        ResponseEntity<CommonResponse<TaskDto>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + projectId + "/tasks/" + taskId,
+                HttpMethod.GET,
+                requestEntity,
+                new ParameterizedTypeReference<>() {
+                });
+        CommonResponse<TaskDto> response = exchange.getBody();
+
+        if (response.getHeader().isSuccessful()) {
+            throw new NotFoundException(response.getHeader().getResultMessage());
+        }
+        return (TaskDto) response.getResult().get(0);
+    }
+
+    public List<TaskDto> getTaskList(Long projectId) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
+
+        HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
+        ResponseEntity<CommonResponse<TaskDto>> exchange = restTemplate.exchange("http://" + "localhost" + ":" + "9090" + "/api/projects/" + projectId + "/tasks",
+                HttpMethod.GET,
+                requestEntity,
+                new ParameterizedTypeReference<>() {
+                });
+        CommonResponse<?> response = exchange.getBody();
+
+        if (response.getHeader().isSuccessful()) {
+            throw new NotFoundException(response.getHeader().getResultMessage());
+        }
+        return (List<TaskDto>) response.getResult();
     }
 }
